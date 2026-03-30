@@ -166,7 +166,7 @@ export function Sidebar() {
         {/* Header with Search */}
         <div className="sticky top-0 bg-gradient-to-r from-magenta-50 to-golden-50 px-4 md:px-6 py-3 md:py-6 border-b border-gray-100 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
-            <h1 className="text-lg md:text-2xl font-black tracking-tight">P&C Jewellery</h1>
+            <h1 className="text-lg md:text-2xl font-black tracking-tight">P&c Texfab</h1>
             <button
               onClick={handleCloseSidebar}
               className="p-1 hover:bg-gray-200 rounded-lg transition-colors flex-shrink-0"

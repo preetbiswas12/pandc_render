@@ -53,7 +53,7 @@ export function Navbar({ }: NavbarProps) {
             className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 md:gap-3" 
           >
             <span className="text-sm md:text-base lg:text-lg font-noto-serif font-bold text-gray-800">
-              P&C Jewellery
+              P&c Texfab
             </span>
           </Link>
 

@@ -4,7 +4,7 @@
 export const config = {
   // App
   app: {
-    name: import.meta.env.VITE_APP_NAME || 'P&C Jewellery',
+    name: import.meta.env.VITE_APP_NAME || 'P&c Texfab',
     url: import.meta.env.VITE_APP_URL || 'http://localhost:5173',
   },
 
@@ -99,7 +99,7 @@ export const config = {
 
   // Admin
   admin: {
-    email: import.meta.env.VITE_ADMIN_EMAIL || 'admin@Jewellerytore.com',
+    email: import.meta.env.VITE_ADMIN_EMAIL || 'admin@pandctexfab.com',
   },
 
   // Development

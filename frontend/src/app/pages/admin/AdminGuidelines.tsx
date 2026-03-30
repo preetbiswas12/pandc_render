@@ -6,7 +6,7 @@ export default function AdminGuidelines() {
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight mb-2">Admin Guidelines</h1>
-        <p className="text-lg opacity-70">Complete guidelines for moderators and administrators of P&C Jewellery shop</p>
+        <p className="text-lg opacity-70">Complete guidelines for moderators and administrators of P&c Texfab shop</p>
       </div>
 
       {/* Important Notice */}
@@ -27,7 +27,7 @@ export default function AdminGuidelines() {
         <div className="space-y-3">
           <p><strong>Business Email:</strong> <code className="bg-gray-100 px-3 py-1 rounded">pandctexfab@gmail.com</code></p>
           <p><strong>Business Phone:</strong> <code className="bg-gray-100 px-3 py-1 rounded">+91 9804915374</code></p>
-          <p><strong>Business Address:</strong> P&C Jewellery, India</p>
+          <p><strong>Business Address:</strong> P&c Texfab, India</p>
           <p className="text-sm opacity-70 mt-4">Use the business email for all customer communications and support inquiries.</p>
         </div>
       </section>
@@ -45,7 +45,7 @@ export default function AdminGuidelines() {
               How Categories Work
             </h3>
             <ul className="list-disc list-inside space-y-1 text-gray-700">
-              <li>Categories are the primary product classification (e.g., Dyeable Jewellery, Printed Jewellery)</li>
+              <li>Categories are the primary product classification (e.g., Dyeable Fabrics, Printed Fabrics)</li>
               <li>Each category has multiple sub-categories for detailed organization</li>
               <li>Categories can be toggled active/inactive without deletion</li>
               <li>Changes to categories immediately reflect across:
@@ -91,7 +91,7 @@ export default function AdminGuidelines() {
                   </ul>
                 </li>
                 <li><strong>Upload Images:</strong> Click "Upload Images" or "Add from Google Drive"</li>
-                <li><strong>Optional Fields:</strong> Offer %, Jewellery Type, Care Instructions, Colors, Features</li>
+                <li><strong>Optional Fields:</strong> Offer %, Fabric Type, Care Instructions, Colors, Features</li>
                 <li><strong>Review</strong> all details before saving</li>
               </ol>
             </div>
@@ -184,7 +184,7 @@ export default function AdminGuidelines() {
                   <p className="text-gray-600">Available stock count (required)</p>
                 </div>
                 <div className="bg-gray-100 rounded p-3">
-                  <p className="font-semibold">Jewellery Type</p>
+                  <p className="font-semibold">Fabric Type</p>
                   <p className="text-gray-600">Material composition (e.g., 100% Silk, Cotton Blend)</p>
                 </div>
                 <div className="bg-gray-100 rounded p-3">
@@ -329,7 +329,7 @@ export default function AdminGuidelines() {
               <li>Respond to customers promptly</li>
               <li>Use proper SKU naming conventions</li>
               <li>Double-check prices before saving</li>
-              <li>Keep jewellery type/care info accurate</li>
+              <li>Keep fabric type/care info accurate</li>
               <li>Use consistent categorization</li>
             </ul>
           </div>

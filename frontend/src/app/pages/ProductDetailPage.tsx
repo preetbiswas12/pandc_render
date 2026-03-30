@@ -249,8 +249,8 @@ export default function ProductDetailPage() {
               <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Specifications</h3>
               <div className="space-y-2 md:space-y-3 text-sm md:text-base">
                 <div className="flex justify-between">
-                  <span className="opacity-70">Jewellery Type:</span>
-                  <span className="font-medium">{product.jewelleryType || 'Jewellery'}</span>
+                  <span className="opacity-70">Fabric Type:</span>
+                  <span className="font-medium">{product.fabricType || 'Fabric'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">Care Instructions:</span>

@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="text-2xl font-bold mb-4">Introduction</h2>
           <p>
-            P&C Jewellery ("Company", "we", "our", or "us") operates the website. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our website and the choices you have associated with that data.
+            P&c Texfab ("Company", "we", "our", or "us") operates the website. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our website and the choices you have associated with that data.
           </p>
         </section>
 
@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
 
         <section>
           <h2 className="text-2xl font-bold mb-4">2. Use of Data</h2>
-          <p>P&C Jewellery uses the collected data for various purposes:</p>
+          <p>P&c Texfab uses the collected data for various purposes:</p>
           <ul className="list-disc list-inside space-y-2 ml-4 my-3">
             <li>To provide and maintain our website</li>
             <li>To notify you about changes to our website</li>
@@ -74,10 +74,10 @@ export default function PrivacyPolicyPage() {
             If you have any questions about this Privacy Policy, please contact us at:
           </p>
           <div className="mt-4 bg-gray-50 p-6 rounded-lg border-2 border-gray-200">
-            <p className="font-semibold">P&C Jewellery</p>
+            <p className="font-semibold">P&c Texfab</p>
             <p>Email: pandctexfab@gmail.com</p>
             <p>Phone: +91 (555) 123-4567</p>
-            <p>P&C Jewellery, India</p>
+            <p>P&c Texfab, India</p>
           </div>
         </section>
 
@@ -93,7 +93,7 @@ export default function PrivacyPolicyPage() {
 
         <section className="bg-magenta-50 p-6 rounded-lg mt-8">
           <p className="text-sm">
-            By using P&C Jewellery, you consent to our Privacy Policy.
+            By using P&c Texfab, you consent to our Privacy Policy.
           </p>
         </section>
       </div>

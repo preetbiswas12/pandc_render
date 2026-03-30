@@ -68,7 +68,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-3">
                 <Mail size={20} className="text-black flex-shrink-0" />
-                <span className="text-black text-sm md:text-base">pandcjewellery@gmail.com</span>
+                <span className="text-black text-sm md:text-base">pandctexfab@gmail.com</span>
               </div>
             </div>
           </div>
@@ -123,7 +123,7 @@ export function Footer() {
       <div className="border-t border-white/10 bg-[#ff9500]">
         <div className="w-full px-4 md:px-8 lg:px-[60px] py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-black text-sm md:text-base">
-            © 2024 P&C Jewellery. All rights reserved.
+            © 2024 P&c Texfab. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#security" className="text-black text-sm md:text-base hover:text-black transition-colors">

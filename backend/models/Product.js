@@ -35,7 +35,7 @@ const productSchema = new mongoose.Schema({
     required: true,
     index: true, // Index for subcategory filtering
   },
-  jewelleryType: {
+  fabricType: {
     type: String,
     required: true,
   },

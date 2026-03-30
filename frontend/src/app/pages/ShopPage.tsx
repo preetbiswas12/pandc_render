@@ -195,7 +195,7 @@ export default function ShopPage() {
       <div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-[60px] py-6 md:py-8 lg:py-12">
           <h1 className="text-2xl md:text-3xl lg:text-5xl tracking-tight mb-2 md:mb-4">
-            {currentCategory ? currentCategory.name : 'All Jewellery'}
+            {currentCategory ? currentCategory.name : 'All Fabrics'}
           </h1>
           <p className="text-sm md:text-base lg:text-lg opacity-70">
             {isLoading && displayedProducts.length === 0 
@@ -239,7 +239,7 @@ export default function ShopPage() {
                     }}
                     className="w-4 h-4 text-black rounded-full border-gray-300 focus:ring-2 focus:ring-black"
                   />
-                  <span className="ml-2 md:ml-3 text-xs md:text-sm text-gray-700 group-hover:text-gray-900">All Jewellery</span>
+                  <span className="ml-2 md:ml-3 text-xs md:text-sm text-gray-700 group-hover:text-gray-900">All Fabrics</span>
                 </label>
                 {categories && categories.filter(cat => cat.isActive).map(cat => (
                   <div key={cat._id}>

@@ -7,7 +7,7 @@ const seedAdmin = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
 
     // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email: 'pandcjewellery@gmail.com' });
+    const existingAdmin = await Admin.findOne({ email: 'admin@pandctexfab.com' });
 
     if (existingAdmin) {
       // Optionally update password if different
@@ -19,9 +19,9 @@ const seedAdmin = async () => {
     } else {
       // Create new admin
       const newAdmin = new Admin({
-        email: 'pandcjewellery@gmail.com',
+        email: 'admin@pandctexfab.com',
         password: 'preetb121106',
-        name: 'P&C Admin',
+        name: 'P&C Texfab Admin',
         role: 'super-admin',
         permissions: [
           'view-dashboard',

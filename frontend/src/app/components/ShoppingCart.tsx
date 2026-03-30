@@ -1,6 +1,6 @@
 import { X, Trash2 } from 'lucide-react';
 import { Link } from 'react-router';
-import { CartItem } from '../types';
+import { CartItem } from '../context/AppContext';
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 

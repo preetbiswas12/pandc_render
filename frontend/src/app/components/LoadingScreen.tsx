@@ -37,7 +37,7 @@ export function LoadingScreen() {
         </div>
 
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-          P&C Jewellery
+          P&c Texfab
         </h1>
         <p className="text-lg md:text-xl text-white/90 mb-8 drop-shadow">
           Loading your premium collection...

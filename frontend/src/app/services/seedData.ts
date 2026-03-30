@@ -1,10 +1,11 @@
 import { db, Product, Banner, Coupon, Category } from './database';
 
 export function seedDatabase() {
+  // Clear existing data first
+  db.clearAll();
+  
   // Seed Products
-  const products = db.getAll<Product>('products');
-  if (products.length === 0) {
-    const fabricProducts: Omit<Product, '_id' | 'createdAt' | 'updatedAt'>[] = [
+  const fabricProducts: Omit<Product, '_id' | 'createdAt' | 'updatedAt'>[] = [
       {
         sku: 'SLK-001',
         name: 'Pure Silk Dyeable Fabric',
@@ -190,12 +191,9 @@ export function seedDatabase() {
     fabricProducts.forEach(product => {
       db.create('products', product);
     });
-  }
 
   // Seed Banners
-  const existingBanners = db.getAll<Banner>('banners');
-  if (existingBanners.length === 0) {
-    const banners: Omit<Banner, '_id' | 'createdAt' | 'updatedAt'>[] = [
+  const banners: Omit<Banner, '_id' | 'createdAt' | 'updatedAt'>[] = [
       {
         type: 'hero-main',
         title: 'Premium Quality\nFabric Supplier',
@@ -243,7 +241,6 @@ export function seedDatabase() {
     banners.forEach(banner => {
       db.create('banners', banner);
     });
-  }
 
   // Seed Coupons
   const coupons: Omit<Coupon, '_id' | 'createdAt' | 'updatedAt'>[] = [
@@ -288,9 +285,7 @@ export function seedDatabase() {
   });
 
   // Seed Categories
-  const existingCategories = db.getAll<Category>('categories');
-  if (existingCategories.length === 0) {
-    const categories: Omit<Category, '_id' | 'createdAt' | 'updatedAt'>[] = [
+  const categories: Omit<Category, '_id' | 'createdAt' | 'updatedAt'>[] = [
       {
         name: 'Dyeable Fabrics',
         slug: 'dyeable-fabric',
@@ -335,7 +330,6 @@ export function seedDatabase() {
     categories.forEach(category => {
       db.create('categories', category);
     });
-  }
 
   console.log('✅ Database seeded successfully!');
 }

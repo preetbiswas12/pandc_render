@@ -15,7 +15,7 @@ export interface SubCategory {
 export const CATEGORIES: Category[] = [
   {
     id: 'dyeable-fabric',
-    name: 'Dyeable Fabrics',,
+    name: 'Dyeable Fabrics',
     subCategories: [
       { id: 'silk', name: 'Silk' },
       { id: 'linen', name: 'Linen' },
@@ -26,7 +26,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'lining-fabric',
-    name: 'Lining Fabrics',,
+    name: 'Lining Fabrics',
     subCategories: [
       { id: 'cotton-lining', name: 'Cotton' },
       { id: 'viscose-lining', name: 'Viscose' }
@@ -34,7 +34,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'printed-fabric',
-    name: 'Printed Fabrics',,
+    name: 'Printed Fabrics',
     subCategories: [
       { id: 'handblock-print', name: 'Handblock Print' },
       { id: 'digital-print', name: 'Digital Print' }
@@ -42,7 +42,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'embroidered-fabric',
-    name: 'Embroidered Fabrics',,
+    name: 'Embroidered Fabrics',
     subCategories: [
       { id: 'beaded-sequin', name: 'Beaded & Sequin Embroidery' },
       { id: 'traditional-embroidery', name: 'Traditional Embroidery' }

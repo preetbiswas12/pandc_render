@@ -14,7 +14,7 @@ export interface Product {
   quantity: number;
   category: string;
   subCategory: string;
-  jewelleryType: string;
+  fabricType: string;
   careInstructions: string;
   description: string;
   images: string[];
@@ -171,11 +171,11 @@ class LocalStorageService {
     return items.find(item => item._id === id) || null;
   }
 
-  async create<T extends { _id?: string }>(collection: CollectionName, data: T): Promise<T & { _id: string }> {
+  async create<T extends Record<string, any>>(collection: CollectionName, data: T): Promise<T & { _id: string; createdAt: string; updatedAt: string }> {
     const items = await this.getAll(collection);
     const newItem = {
       ...data,
-      _id: data._id || this.generateId(),
+      _id: (data as any)._id || this.generateId(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     } as T & { _id: string; createdAt: string; updatedAt: string };
@@ -289,14 +289,14 @@ class MongoDBService {
     }
   }
 
-  async create<T extends { _id?: string }>(collection: CollectionName, data: T): Promise<T & { _id: string }> {
+  async create<T extends Record<string, any>>(collection: CollectionName, data: T): Promise<T & { _id: string; createdAt: string; updatedAt: string }> {
     try {
       const response = await fetch(`${API_URL}/${collection}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-      const result: ApiResponse<T & { _id: string }> = await response.json();
+      const result: ApiResponse<T & { _id: string; createdAt: string; updatedAt: string }> = await response.json();
       if (result.success && result.data) {
         const allData = await this.getAll(collection);
         this.notifyListeners(collection, allData);

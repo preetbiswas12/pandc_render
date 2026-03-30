@@ -23,7 +23,7 @@ export default function AdminProducts() {
     description: '',
     sku: '',
     quantity: '',
-    jewelleryType: '',
+    fabricType: '',
     careInstructions: '',
     colors: '',
     features: ''
@@ -40,7 +40,7 @@ export default function AdminProducts() {
       description: '',
       sku: '',
       quantity: '',
-      jewelleryType: '',
+      fabricType: '',
       careInstructions: '',
       colors: '',
       features: ''
@@ -149,7 +149,7 @@ export default function AdminProducts() {
     if (product) {
       // ⚠️ FETCH FULL PRODUCT DATA: Get complete product from API to ensure all fields are present
       try {
-        const fullProduct = await (db as any).getById<typeof products[0]>('products', product._id || product.id);
+        const fullProduct: any = await (db as any).getById('products', product._id || product.id);
         if (fullProduct) {
           setEditingProduct(fullProduct);
           setFormData({
@@ -162,7 +162,7 @@ export default function AdminProducts() {
             description: fullProduct.description || '',
             sku: fullProduct.sku,
             quantity: fullProduct.quantity.toString(),
-            jewelleryType: fullProduct.jewelleryType || '',
+            fabricType: fullProduct.fabricType || '',
             careInstructions: fullProduct.careInstructions || '',
             colors: fullProduct.colors?.join(', ') || '',
             features: fullProduct.features?.join(', ') || ''
@@ -180,7 +180,7 @@ export default function AdminProducts() {
             description: product.description || '',
             sku: product.sku,
             quantity: product.quantity.toString(),
-            jewelleryType: product.jewelleryType || '',
+            fabricType: product.fabricType || '',
             careInstructions: product.careInstructions || '',
             colors: product.colors?.join(', ') || '',
             features: product.features?.join(', ') || ''
@@ -200,8 +200,8 @@ export default function AdminProducts() {
           description: product.description || '',
           sku: product.sku,
           quantity: product.quantity.toString(),
-          jewelleryType: product.jewelleryType || '',
-          careInstructions: product.careInstructions || '',
+        fabricType: product.fabricType || '',
+        careInstructions: product.careInstructions || '',
           colors: product.colors?.join(', ') || '',
           features: product.features?.join(', ') || ''
         });
@@ -243,7 +243,7 @@ export default function AdminProducts() {
       quantity: parseInt(formData.quantity),
       category: formData.category,
       subCategory: formData.subCategory,
-      jewelleryType: formData.jewelleryType,
+      fabricType: formData.fabricType,
       careInstructions: formData.careInstructions,
       description: formData.description,
       sku: formData.sku,
@@ -469,11 +469,11 @@ export default function AdminProducts() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Jewellery Type</label>
+                  <label className="block text-sm font-medium mb-2">Fabric Type</label>
                   <input
                     type="text"
-                    value={formData.jewelleryType}
-                    onChange={(e) => setFormData(prev => ({ ...prev, jewelleryType: e.target.value }))}
+                    value={formData.fabricType}
+                    onChange={(e) => setFormData(prev => ({ ...prev, fabricType: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   />
                 </div>

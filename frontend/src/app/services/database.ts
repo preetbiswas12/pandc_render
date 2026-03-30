@@ -165,18 +165,18 @@ class DatabaseService {
     return items.find(item => item._id === id) || null;
   }
 
-  create<T extends { _id?: string }>(collection: CollectionName, data: T): T & { _id: string } {
+  create<T extends Record<string, any>>(collection: CollectionName, data: T): T & { _id: string; createdAt: string; updatedAt: string } {
     const items = this.getAll(collection);
     const newItem = {
       ...data,
-      _id: data._id || this.generateId(),
+      _id: (data as any)._id || this.generateId(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
     items.push(newItem);
     localStorage.setItem(collection, JSON.stringify(items));
     this.triggerStorageEvent(collection);
-    return newItem as T & { _id: string };
+    return newItem as T & { _id: string; createdAt: string; updatedAt: string };
   }
 
   update<T extends { _id: string }>(collection: CollectionName, id: string, data: Partial<T>): T | null {
