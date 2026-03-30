@@ -1,0 +1,174 @@
+const mongoose = require('mongoose');
+const fs = require('fs');
+require('dotenv').config();
+
+const Product = require('./models/Product');
+const Category = require('./models/Category');
+
+// Helper function to create slug from name
+const createSlug = (name) => {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]/g, '');
+};
+
+const seedProducts = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Connected to MongoDB for product seeding...');
+
+    // Ensure essential categories exist
+    const essentialCategories = [
+      {
+        name: 'Cotton',
+        slug: 'cotton',
+        subCategories: [
+          { name: 'Plain Cotton', slug: 'plain-cotton' },
+          { name: 'Printed Cotton', slug: 'printed-cotton' },
+          { name: 'Organic Cotton', slug: 'organic-cotton' }
+        ],
+        isActive: true
+      },
+      {
+        name: 'Silk',
+        slug: 'silk',
+        subCategories: [
+          { name: 'Pure Silk', slug: 'pure-silk' },
+          { name: 'Silk Blends', slug: 'silk-blends' },
+          { name: 'Digital Print Silk', slug: 'digital-print-silk' }
+        ],
+        isActive: true
+      },
+      {
+        name: 'Linen',
+        slug: 'linen',
+        subCategories: [
+          { name: 'Pure Linen', slug: 'pure-linen' },
+          { name: 'Linen Blends', slug: 'linen-blends' }
+        ],
+        isActive: true
+      },
+      {
+        name: 'Wool',
+        slug: 'wool',
+        subCategories: [
+          { name: 'Merino Wool', slug: 'merino-wool' },
+          { name: 'Cashmere Blends', slug: 'cashmere-blends' }
+        ],
+        isActive: true
+      }
+    ];
+
+    // Upsert categories
+    for (const cat of essentialCategories) {
+      await Category.findOneAndUpdate(
+        { slug: cat.slug },
+        cat,
+        { upsert: true, new: true }
+      );
+    }
+    console.log('✓ Categories ensured/created');
+
+    // Fetch all categories for mapping
+    const categories = await Category.find({});
+    const categoryMap = {};
+    categories.forEach(cat => {
+      categoryMap[cat.name] = cat._id;
+      categoryMap[cat.slug] = cat._id;
+    });
+
+    // Read and parse CSV file
+    const csvPath = '../pandc.products.csv';
+    const csvContent = fs.readFileSync(csvPath, 'utf-8');
+    const lines = csvContent.split('\n').filter(line => line.trim());
+    
+    // Parse header
+    const headers = lines[0].split(',').map(h => h.trim());
+    console.log('CSV Headers:', headers);
+
+    // Parse data rows
+    const products = [];
+    const categoriesSet = new Set();
+    
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(',').map(v => v.trim());
+      
+      if (values.length < headers.length) continue;
+
+      // Create object from headers and values
+      const row = {};
+      headers.forEach((header, idx) => {
+        row[header] = values[idx];
+      });
+
+      // Extract images
+      const images = [];
+      for (let j = 0; j < 4; j++) {
+        const imgKey = `images[${j}]`;
+        if (headers.includes(imgKey) && row[imgKey]) {
+          images.push(row[imgKey]);
+        }
+      }
+
+      // Calculate offer percentage
+      const mrp = parseFloat(row.mrp) || 0;
+      const price = parseFloat(row.price) || 0;
+      const offerPercentage = mrp > 0 ? Math.round(((mrp - price) / mrp) * 100) : 0;
+
+      // Get category ID from mapping (or create mapping entry)
+      const categoryName = row.category || 'Other';
+      categoriesSet.add(categoryName);
+      
+      let categoryId = categoryMap[categoryName];
+      if (!categoryId) {
+        // Try slug-based lookup
+        const slug = createSlug(categoryName);
+        categoryId = categoryMap[slug];
+      }
+
+      // Create product object with category ID
+      const product = {
+        sku: row.id || `SKU-${Date.now()}`,
+        name: row.name || 'Untitled Product',
+        price: price,
+        offerPercentage: offerPercentage,
+        quantity: parseInt(row.stock) || 0,
+        category: categoryId || categoryName, // Use ID if found, otherwise name
+        subCategory: row.category || 'General',
+        fabricType: 'Premium Fabric',
+        careInstructions: 'Gentle hand wash in cold water. Dry in shade to maintain color vibrancy.',
+        description: row.description || '',
+        images: images,
+        colors: ['Natural', 'Dyed'],
+        features: [
+          'Premium Quality Fabric',
+          'Handcrafted Design',
+          'Durable & Long-lasting',
+          'Breathable & Comfortable'
+        ]
+      };
+
+      products.push(product);
+      console.log(`✓ Parsed: ${product.name} (Category: ${categoryName})`);
+    }
+
+    console.log('\nUnique categories found:', Array.from(categoriesSet));
+
+    // Clear existing products and insert new ones
+    const result = await Product.deleteMany({});
+    console.log(`\nCleared ${result.deletedCount} existing products.`);
+
+    const inserted = await Product.insertMany(products);
+    console.log(`\n✅ Successfully seeded ${inserted.length} products!`);
+
+    console.log('\nDatabase seeding completed!');
+    process.exit(0);
+  } catch (err) {
+    console.error('Seeding error:', err.message);
+    process.exit(1);
+  }
+};
+
+seedProducts();
