@@ -192,6 +192,11 @@ export const API_BASE_URL = (() => {
     return 'http://localhost:5000/api';
   }
   
+  // Use environment variable if available
+  if (envUrl && envUrl.includes('http')) {
+    return envUrl;
+  }
+  
   // Default to production HTTPS
   return 'https://pandctexfab.com/api';
 })();

@@ -9,12 +9,16 @@ if (!clerkPubKey) {
 }
 
 export default function App() {
+  const redirectUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
+    ? 'http://localhost:5173/' 
+    : 'https://pandctexfab.com/';
+  
   return (
     <ClerkProvider
       publishableKey={clerkPubKey}
-      signInFallbackRedirectUrl="https://pandctexfab.com/"
-      signUpFallbackRedirectUrl="https://pandctexfab.com/"
-      afterSignOutUrl="https://pandctexfab.com/"
+      signInFallbackRedirectUrl={redirectUrl}
+      signUpFallbackRedirectUrl={redirectUrl}
+      afterSignOutUrl={redirectUrl}
     >
       <RouterProvider router={router} />
     </ClerkProvider>
