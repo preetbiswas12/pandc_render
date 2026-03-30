@@ -323,7 +323,7 @@ export function seedDatabase() {
       },
       {
         name: 'Embroidered Fabrics',
-        slug: 'embroidered-fabric',,
+        slug: 'embroidered-fabric',
         subCategories: [
           { name: 'Beaded & Sequin', slug: 'beaded-sequin' },
           { name: 'Traditional', slug: 'traditional' }
