@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const Admin = require('./models/Admin');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const seedAdmin = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
 
     // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email: 'admin@pandctexfab.com' });
+    const existingAdmin = await Admin.findOne({ email: 'pandctexfab@gmail.com' });
 
     if (existingAdmin) {
       // Optionally update password if different
@@ -19,9 +20,9 @@ const seedAdmin = async () => {
     } else {
       // Create new admin
       const newAdmin = new Admin({
-        email: 'admin@pandctexfab.com',
+        email: 'pandctexfab@gmail.com',
         password: 'preetb121106',
-        name: 'P&C Texfab Admin',
+        name: 'Preet Biswas',
         role: 'super-admin',
         permissions: [
           'view-dashboard',
