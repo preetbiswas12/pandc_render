@@ -104,7 +104,7 @@ export function HeroSection() {
     <div ref={heroRef} className="w-full py-8 md:py-12">
       {/* Main Hero */}
       <div className="px-4 md:px-8 lg:px-14 xl:px-24 2xl:px-32 flex flex-col lg:flex-row justify-start items-stretch gap-2.5 w-full max-w-[2000px] mx-auto">
-        <div ref={mainHeroRef} className="relative w-full lg:w-1/2 xl:w-3/5 h-[300px] sm:h-[400px] md:h-[600px] lg:h-[650px] xl:h-[770px] rounded-[40px] overflow-hidden bg-zinc-300 flex-shrink-0">
+        <div ref={mainHeroRef} className="relative w-full lg:w-1/2 xl:w-3/5 h-[240px] sm:h-[340px] md:h-[600px] lg:h-[650px] xl:h-[770px] rounded-[40px] overflow-hidden bg-zinc-300 flex-shrink-0">
           <img 
             src={convertGoogleDriveLink(heroMainBanner?.image || defaultHeroMain.image)} 
             alt="" 
@@ -133,12 +133,12 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div ref={sideCardsRef} className="w-full lg:w-1/2 xl:w-2/5 inline-flex flex-row lg:flex-col justify-start items-start gap-2.5 flex-shrink-0">
+        <div ref={sideCardsRef} className="w-full lg:w-1/2 xl:w-2/5 inline-flex flex-col sm:flex-row lg:flex-col justify-start items-stretch gap-2.5 flex-shrink-0">
           {(heroSideBanners.length > 0 ? heroSideBanners : defaultHeroSide).slice(0, 2).map((banner, index) => {
             const isDefault = heroSideBanners.length === 0;
             const data = isDefault ? banner : heroSideBanners[index];
             return (
-              <Link key={index} to={data.link} className="hero-card flex-1 lg:flex-none lg:w-full h-[240px] md:h-[300px] lg:h-[318px] xl:h-96 relative overflow-hidden rounded-[40px] group">
+              <Link key={index} to={data.link} className="hero-card w-full sm:flex-1 lg:flex-none lg:w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[318px] xl:h-96 relative overflow-hidden rounded-[40px] group">
                 <div className="h-full w-full left-0 top-0 absolute bg-zinc-300" />
                 <img src={convertGoogleDriveLink(data.image)} alt={data.title.replace(/\\n/g, ' ')} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <h3 className="absolute top-[15px] md:top-[25px] lg:top-[25px] xl:top-[30px] left-[15px] md:left-[25px] lg:left-[25px] xl:left-[30px] justify-start text-neutral-900 text-xl md:text-3xl lg:text-2xl xl:text-4xl font-normal leading-8 lg:leading-8 xl:leading-10">
@@ -174,7 +174,7 @@ export function HeroSection() {
             const isDefault = casualBanners.length === 0;
             const data = isDefault ? banner : casualBanners[index];
             return (
-              <Link key={index} to={data.link} className="flex-1 h-[200px] sm:h-[240px] md:h-[300px] lg:h-[318px] xl:h-96 relative overflow-hidden rounded-[40px] group">
+              <Link key={index} to={data.link} className="w-full sm:flex-1 h-[170px] sm:h-[240px] md:h-[300px] lg:h-[318px] xl:h-96 relative overflow-hidden rounded-[40px] group">
                 <div className="h-full w-full left-0 top-0 absolute bg-zinc-300" />
                 <img src={convertGoogleDriveLink(data.image)} alt={data.title.replace(/\\n/g, ' ')} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute bottom-4 md:bottom-5 lg:bottom-5 xl:bottom-6 left-4 md:left-5 lg:left-5 xl:left-6 right-4 md:right-5 lg:right-5 xl:right-6 bg-white/30 backdrop-blur-md rounded-full px-4 md:px-5 lg:px-5 xl:px-6 py-2 md:py-2.5 lg:py-2.5 xl:py-3 inline-flex items-center justify-center">
