@@ -1,7 +1,7 @@
 CLOUDINARY_API_KEY=985859232362146
 CLOUDINARY_API_SECRET=gpQrS0elEN96V3exdWElX_zPUfg
 CLOUDINARY_CLOUD_NAME=dbyx7n0ys
-CORS_ORIGIN=http://pandctexfab.com
+CORS_ORIGIN=https://pandctexfab.com
 EMAIL_PASSWORD=your_app_password
 EMAIL_SERVICE=gmail
 EMAIL_USER=your_email@gmail.com
