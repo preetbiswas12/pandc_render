@@ -176,7 +176,7 @@ export function HeroSection() {
             return (
               <Link key={index} to={data.link} className="flex-1 h-[200px] sm:h-[240px] md:h-[300px] lg:h-[318px] xl:h-96 relative overflow-hidden rounded-[40px] group">
                 <div className="h-full w-full left-0 top-0 absolute bg-zinc-300" />
-                <img src={data.image} alt={data.title.replace(/\\n/g, ' ')} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={convertGoogleDriveLink(data.image)} alt={data.title.replace(/\\n/g, ' ')} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute bottom-4 md:bottom-5 lg:bottom-5 xl:bottom-6 left-4 md:left-5 lg:left-5 xl:left-6 right-4 md:right-5 lg:right-5 xl:right-6 bg-white/30 backdrop-blur-md rounded-full px-4 md:px-5 lg:px-5 xl:px-6 py-2 md:py-2.5 lg:py-2.5 xl:py-3 inline-flex items-center justify-center">
                   <h3 className="text-neutral-900 text-sm md:text-base lg:text-base xl:text-lg font-semibold leading-5 lg:leading-5 xl:leading-6 text-center">
                     {data.title.split('\\n').map((line, i) => (
