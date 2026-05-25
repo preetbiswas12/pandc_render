@@ -352,7 +352,12 @@ export default function AdminProducts() {
                   )}
                 </div>
                 <p className="text-xs sm:text-sm opacity-70 mb-4">Stock: {product.quantity}</p>
-                <p className="text-xs sm:text-sm opacity-70 mb-4">Stock: {product.unit === 'pieces' ? `${product.quantity} pieces` : `${product.quantity} in meters`}</p>
+                <p className="text-xs sm:text-sm opacity-70 mb-4">
+                  Stock: {product.unit === 'pieces' ? `${product.quantity} pieces` : `${product.quantity} meters`}
+                  {product.width && product.width > 0 && (
+                    <> • Width: {Math.round(product.width * 39.3701)} in</>
+                  )}
+                </p>
                 <div className="flex gap-2">
                   <button
                     onClick={() => openModal(product)}

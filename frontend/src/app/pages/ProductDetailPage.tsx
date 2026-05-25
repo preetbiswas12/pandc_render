@@ -174,7 +174,14 @@ export default function ProductDetailPage() {
             <div className="flex items-center gap-4 text-xs md:text-sm">
               <span className={product.quantity > 0 ? 'text-green-600' : 'text-red-600'}>
                 {product.quantity > 0 ? (
-                  product.unit === 'pieces' ? `${product.quantity} pieces in stock` : `${product.quantity} meters in stock`
+                  (() => {
+                    const base = product.unit === 'pieces' ? `${product.quantity} pieces in stock` : `${product.quantity} meters in stock`;
+                    if (product.width && product.width > 0) {
+                      const widthInches = Math.round(product.width * 39.3701);
+                      return `${base} • Width: ${widthInches} in`;
+                    }
+                    return base;
+                  })()
                 ) : 'Out of stock'}
               </span>
             </div>
@@ -197,7 +204,7 @@ export default function ProductDetailPage() {
                   +
                 </button>
               </div>
-              <p className="text-xs opacity-70 mt-2">Minimum order: 2 meters</p>
+              <p className="text-xs opacity-70 mt-2">{product.unit === 'pieces' ? 'Minimum order: 1 piece' : 'Minimum order: 2 meters'}</p>
             </div>
 
             {/* Actions */}
