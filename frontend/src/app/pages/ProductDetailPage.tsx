@@ -14,7 +14,7 @@ export default function ProductDetailPage() {
   const { products, addToCart, wishlist, toggleWishlist } = useApp();
   
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(2); // Minimum 2 meters
+  const [quantity, setQuantity] = useState<number>(2); // will be initialized correctly below
   const [addedToCart, setAddedToCart] = useState(false);
   const [showZoom, setShowZoom] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
@@ -31,7 +31,12 @@ export default function ProductDetailPage() {
   useEffect(() => {
     if (!product) {
       navigate('/shop');
+      return;
     }
+
+    // Initialize quantity based on unit
+    const minQty = product.unit === 'pieces' ? 1 : 2;
+    setQuantity((prev) => (prev && prev >= minQty ? prev : minQty));
   }, [product, navigate]);
 
   useEffect(() => {
@@ -191,7 +196,10 @@ export default function ProductDetailPage() {
               <label className="block text-xs md:text-sm font-medium mb-2">Quantity {product.unit === 'pieces' ? '(pieces)' : '(in meters)'}</label>
               <div className="flex items-center gap-3 md:gap-4">
                 <button
-                  onClick={() => setQuantity(Math.max(2, quantity - 1))}
+                  onClick={() => {
+                    const minQty = product.unit === 'pieces' ? 1 : 2;
+                    setQuantity(Math.max(minQty, quantity - 1));
+                  }}
                   className="w-9 h-9 md:w-10 md:h-10 border-2 border-black rounded-lg hover:bg-black hover:text-white transition-all text-sm"
                 >
                   -

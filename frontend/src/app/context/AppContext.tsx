@@ -120,7 +120,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Cart Management
   const addToCart = (product: Product, quantity?: number) => {
-    const quantityToAdd = Math.max(2, Math.min(quantity || 2, 100)); // Default to 2, max 100
+    const minQty = product.unit === 'pieces' ? 1 : 2;
+    const quantityToAdd = Math.max(minQty, Math.min(quantity || minQty, 100)); // Default depends on unit, max 100
     
     setCartItems((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
@@ -138,13 +139,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
-    // Enforce minimum of 2, maximum of 100
-    const validatedQuantity = Math.max(2, Math.min(parseInt(String(quantity), 10) || 2, 100));
-    
+    const validatedQuantity = Math.min(parseInt(String(quantity), 10) || 1, 100);
     setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === productId ? { ...item, cartQuantity: validatedQuantity } : item
-      )
+      prev.map((item) => {
+        if (item.id !== productId) return item;
+        const minQty = item.unit === 'pieces' ? 1 : 2;
+        const finalQty = Math.max(minQty, validatedQuantity);
+        return { ...item, cartQuantity: finalQty };
+      })
     );
   };
 

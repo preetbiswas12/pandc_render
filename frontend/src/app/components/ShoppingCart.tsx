@@ -95,7 +95,10 @@ export function ShoppingCart({ isOpen, onClose, items, onUpdateQuantity, onRemov
                     </div>
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => onUpdateQuantity(item.id, Math.max(2, item.cartQuantity - 1))}
+                        onClick={() => {
+                          const minQty = item.unit === 'pieces' ? 1 : 2;
+                          onUpdateQuantity(item.id, Math.max(minQty, item.cartQuantity - 1));
+                        }}
                         className="w-6 h-6 border rounded flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110 active:scale-95"
                       >
                         -

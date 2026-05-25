@@ -87,7 +87,10 @@ export default function CartPage() {
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => updateQuantity(item.id, Math.max(2, item.cartQuantity - 1))}
+                          onClick={() => {
+                            const minQty = item.unit === 'pieces' ? 1 : 2;
+                            updateQuantity(item.id, Math.max(minQty, item.cartQuantity - 1));
+                          }}
                           className="w-7 h-7 md:w-8 md:h-8 border-2 border-black rounded-lg hover:bg-black hover:text-white transition-all text-sm"
                         >
                           -
