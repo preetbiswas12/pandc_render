@@ -73,7 +73,7 @@ const seedData = async () => {
       {
         type: 'hero-main',
         title: 'Premium Quality\nFabric Supplier',
-        subtitle: 'Finest selection of cotton, silk, linen, and specialty fabrics for your creative projects',
+        subtitle: 'Finest selection of cotton, silk, Linen, Viscose & Printed Fabrics for fashionable and everday garments',
         image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200',
         link: '/shop',
         buttonText: 'EXPLORE FABRICS',
