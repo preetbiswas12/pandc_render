@@ -173,13 +173,15 @@ export default function ProductDetailPage() {
 
             <div className="flex items-center gap-4 text-xs md:text-sm">
               <span className={product.quantity > 0 ? 'text-green-600' : 'text-red-600'}>
-                {product.quantity > 0 ? `${product.quantity} products in stock` : 'Out of stock'}
+                {product.quantity > 0 ? (
+                  product.unit === 'pieces' ? `${product.quantity} pieces in stock` : `${product.quantity} meters in stock`
+                ) : 'Out of stock'}
               </span>
             </div>
 
             {/* Quantity */}
             <div>
-              <label className="block text-xs md:text-sm font-medium mb-2">Quantity (in meters)</label>
+              <label className="block text-xs md:text-sm font-medium mb-2">Quantity {product.unit === 'pieces' ? '(pieces)' : '(in meters)'}</label>
               <div className="flex items-center gap-3 md:gap-4">
                 <button
                   onClick={() => setQuantity(Math.max(2, quantity - 1))}

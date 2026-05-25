@@ -26,20 +26,34 @@ router.get('/', async (req, res) => {
     // ⚠️ DEFENSIVE: Build filter query with validation
     const filter = {};
     
-    // Filter by category - handle both slug (lookup ID) and direct ID
+    // Filter by category - support category stored as ID, slug, or name
     if (req.query.category && typeof req.query.category === 'string' && req.query.category.trim()) {
-      const categorySlug = req.query.category.trim();
-      
+      const categoryParam = req.query.category.trim();
+
       // Try to find category by slug first
-      const foundCategory = await Category.findOne({ slug: categorySlug });
-      
+      const foundCategory = await Category.findOne({ slug: categoryParam });
+
       if (foundCategory) {
-        filter.category = foundCategory._id.toString();
-      } else if (isValidObjectId(categorySlug)) {
-        // If not found by slug and it's a valid ObjectId, use it directly
-        filter.category = categorySlug;
+        const catId = foundCategory._id.toString();
+        const catSlug = foundCategory.slug;
+        const catName = foundCategory.name;
+
+        // Match products where category field is stored as the category ID, slug, or human-readable name
+        filter.$or = [
+          { category: catId },
+          { category: catSlug },
+          { category: catName }
+        ];
+      } else if (isValidObjectId(categoryParam)) {
+        // If the provided value is an ObjectId, match by ID
+        filter.category = categoryParam;
+      } else {
+        // If no category document found, also try matching by raw slug/name stored directly on products
+        filter.$or = [
+          { category: categoryParam },
+          { category: { $regex: new RegExp('^' + categoryParam + '$', 'i') } }
+        ];
       }
-      // If neither slug nor ID matches, filter will be empty (no products)
     }
     
     // Filter by subCategory if provided and not empty

@@ -22,6 +22,8 @@ export interface Product {
   features: string[];
   createdAt: string;
   updatedAt: string;
+  width: number;
+  unit: string;
 }
 
 export interface Order {

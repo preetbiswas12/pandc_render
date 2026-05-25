@@ -39,6 +39,17 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // Width in meters (optional for fabrics sold by width)
+  width: {
+    type: Number,
+    default: 0,
+  },
+  // Unit for quantity: 'meters' or 'pieces'
+  unit: {
+    type: String,
+    enum: ['meters', 'pieces'],
+    default: 'meters',
+  },
   careInstructions: {
     type: String,
     default: '',

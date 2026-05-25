@@ -23,6 +23,8 @@ export default function AdminProducts() {
     description: '',
     sku: '',
     quantity: '',
+    width: '',
+    unit: 'meters',
     fabricType: '',
     careInstructions: '',
     colors: '',
@@ -40,6 +42,8 @@ export default function AdminProducts() {
       description: '',
       sku: '',
       quantity: '',
+      width: '',
+      unit: 'meters',
       fabricType: '',
       careInstructions: '',
       colors: '',
@@ -161,7 +165,9 @@ export default function AdminProducts() {
             subCategory: fullProduct.subCategory,
             description: fullProduct.description || '',
             sku: fullProduct.sku,
-            quantity: fullProduct.quantity.toString(),
+              quantity: fullProduct.quantity.toString(),
+              width: fullProduct.width?.toString() || '',
+              unit: fullProduct.unit || 'meters',
             fabricType: fullProduct.fabricType || '',
             careInstructions: fullProduct.careInstructions || '',
             colors: fullProduct.colors?.join(', ') || '',
@@ -180,6 +186,8 @@ export default function AdminProducts() {
             description: product.description || '',
             sku: product.sku,
             quantity: product.quantity.toString(),
+            width: product.width?.toString() || '',
+            unit: product.unit || 'meters',
             fabricType: product.fabricType || '',
             careInstructions: product.careInstructions || '',
             colors: product.colors?.join(', ') || '',
@@ -241,6 +249,8 @@ export default function AdminProducts() {
       price: parseFloat(formData.price),
       offerPercentage: parseFloat(formData.offerPercentage) || 0,
       quantity: parseInt(formData.quantity),
+      width: parseFloat(formData.width) || 0,
+      unit: formData.unit || 'meters',
       category: formData.category,
       subCategory: formData.subCategory,
       fabricType: formData.fabricType,
@@ -342,6 +352,7 @@ export default function AdminProducts() {
                   )}
                 </div>
                 <p className="text-xs sm:text-sm opacity-70 mb-4">Stock: {product.quantity}</p>
+                <p className="text-xs sm:text-sm opacity-70 mb-4">Stock: {product.unit === 'pieces' ? `${product.quantity} pieces` : `${product.quantity} in meters`}</p>
                 <div className="flex gap-2">
                   <button
                     onClick={() => openModal(product)}
@@ -427,14 +438,36 @@ export default function AdminProducts() {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">Quantity *</label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={formData.quantity}
-                    onChange={(e) => setFormData(prev => ({ ...prev, quantity: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                  />
+                  <div className="grid grid-cols-3 gap-2">
+                    <input
+                      type="number"
+                      required
+                      min="0"
+                      value={formData.quantity}
+                      onChange={(e) => setFormData(prev => ({ ...prev, quantity: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      placeholder="Qty"
+                    />
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={formData.width}
+                      onChange={(e) => setFormData(prev => ({ ...prev, width: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      placeholder="Width (m)"
+                    />
+
+                    <select
+                      value={formData.unit}
+                      onChange={(e) => setFormData(prev => ({ ...prev, unit: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                    >
+                      <option value="meters">meters</option>
+                      <option value="pieces">pieces</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div>
