@@ -35,6 +35,7 @@ export default function ShopPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hasMountedRef = useRef(false);
   
   const { addToCart, wishlist, toggleWishlist, categories } = useApp();
   const pageRef = useRef<HTMLDivElement>(null);
@@ -120,25 +121,20 @@ export default function ShopPage() {
     }
   }, [selectedCategory, selectedSubCategory, selectedColor]);
 
-  // ⚠️ FIXED: Debounced filter changes - only depends on filter values, not pagination
+  // Fetch once on mount, then debounce subsequent filter changes
   useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      fetchProducts(1);
+      return;
+    }
+
     const timer = setTimeout(() => {
       fetchProducts(1); // Reset to page 1 when filters change
-    }, 500); // Increased debounce delay
+    }, 400);
 
     return () => clearTimeout(timer);
   }, [selectedCategory, selectedSubCategory, selectedColor, fetchProducts]);
-
-  // ⚠️ FIXED: Load initial products on mount only
-  useEffect(() => {
-    fetchProducts(1);
-    
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
-  }, []);
 
   // Update selected color when URL changes
   useEffect(() => {
