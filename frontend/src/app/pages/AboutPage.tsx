@@ -22,7 +22,7 @@ export default function AboutPage() {
             P&C Texfab was founded with a passion for bringing premium quality fabrics to creative minds around the world. We believe that the right fabric can transform any vision into reality.
           </p>
           <p className="text-sm md:text-base lg:text-lg text-gray-700 leading-relaxed">
-            What started as a small initiative has grown into a trusted textile supplier where designers, crafters, fashion enthusiasts, and home décor professionals find inspiration and quality materials for their projects.
+            What started as a small initiative has grown into a trusted fabric supplier where designers, crafters, fashion enthusiasts, and home décor professionals find inspiration and quality materials for their projects.
           </p>
         </section>
 
@@ -40,7 +40,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {[
               { title: 'Quality', description: 'We source only the finest fabrics from trusted suppliers worldwide.' },
-              { title: 'Innovation', description: 'We constantly explore new designs, prints, and textile collections to inspire creativity.' },
+              { title: 'Innovation', description: 'We constantly explore new designs, prints, and fabric collections to inspire creativity.' },
               { title: 'Sustainability', description: 'We\'re committed to eco-friendly practices and ethical production methods.' }
             ].map((value, i) => (
               <div key={i} className="border-2 border-magenta-200 p-4 md:p-6 rounded-lg">
@@ -56,7 +56,7 @@ export default function AboutPage() {
           <h2 className="text-lg md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6 lg:mb-8">Why Choose Us?</h2>
           <ul className="space-y-2 md:space-y-3 lg:space-y-4">
             {[
-              'Premium quality fabrics from world-renowned textile manufacturers',
+              'Premium quality fabrics from world-renowned fabric manufacturers',
               'Curated collections for every project, season, and style',
               'Fast and reliable shipping worldwide',
               'Expert customer support and fabric guidance',

@@ -181,7 +181,7 @@ export function seedDatabase() {
         subCategory: 'silk',
         fabricType: 'Tussar Silk Dyeable',
         careInstructions: 'Gentle hand wash recommended. Dry in shade.',
-        description: 'Natural tussar silk with rich texture and golden sheen. Eco-friendly and biodegradable. Ideal for sustainable fashion and home textiles.',
+        description: 'Natural tussar silk with rich texture and golden sheen. Eco-friendly and biodegradable. Ideal for sustainable fashion and home fabrics.',
         images: ['https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800'],
         colors: ['natural', 'golden'],
         features: ['Natural Tussar Silk', 'Golden Sheen', 'Eco-Friendly', 'Biodegradable', 'Rich Texture']
@@ -230,7 +230,7 @@ export function seedDatabase() {
       },
       {
         type: 'casual-inspiration',
-        title: 'Handwoven\nTextiles',
+        title: 'Handwoven\nFabrics',
         image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800',
         link: '/shop',
         isActive: true,
