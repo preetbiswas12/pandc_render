@@ -54,7 +54,7 @@ export function Navbar({ }: NavbarProps) {
           >
             <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-noto-serif font-bold tracking-tight leading-none whitespace-nowrap">
               <span className="text-[#0A2A66]">P</span>
-              <span className="text-[#D11A2A]">&amp;</span>
+              <span className="text-[#3d060b]">&amp;</span>
               <span className="text-[#F4C300]">C</span>{' '}
               <span className="text-black">Texfab</span>
             </span>
