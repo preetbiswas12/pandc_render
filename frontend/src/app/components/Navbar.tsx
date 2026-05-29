@@ -52,8 +52,11 @@ export function Navbar({ }: NavbarProps) {
             to="/" 
             className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 md:gap-3" 
           >
-            <span className="text-base md:text-xl lg:text-2xl font-noto-serif font-bold text-gray-800">
-              P&C Texfab
+            <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-noto-serif font-bold tracking-tight leading-none whitespace-nowrap">
+              <span className="text-[#0A2A66]">P</span>
+              <span className="text-[#D11A2A]">&amp;</span>
+              <span className="text-[#F4C300]">C</span>{' '}
+              <span className="text-black">Texfab</span>
             </span>
           </Link>
 
