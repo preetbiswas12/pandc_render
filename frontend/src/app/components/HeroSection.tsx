@@ -105,9 +105,9 @@ export function HeroSection() {
       {/* Main Hero */}
       <div className="px-4 md:px-8 lg:px-14 xl:px-24 2xl:px-32 flex flex-col lg:flex-row justify-start items-stretch gap-2.5 w-full max-w-[2000px] mx-auto">
         <div ref={mainHeroRef} className="relative w-full lg:w-1/2 xl:w-3/5 h-[240px] sm:h-[340px] md:h-[600px] lg:h-[650px] xl:h-[770px] rounded-[40px] overflow-hidden bg-zinc-300 flex-shrink-0">
-          <img 
-            src={convertGoogleDriveLink(heroMainBanner?.image || defaultHeroMain.image)} 
-            alt="" 
+          <img
+            src={convertGoogleDriveLink(heroMainBanner?.image || defaultHeroMain.image)}
+            alt=""
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
@@ -145,7 +145,7 @@ export function HeroSection() {
               <Link key={index} to={data.link} className="hero-card w-full sm:flex-1 lg:flex-none lg:w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[318px] xl:h-96 relative overflow-hidden rounded-[40px] group">
                 <div className="h-full w-full left-0 top-0 absolute bg-zinc-300" />
                 <img src={convertGoogleDriveLink(data.image)} alt={data.title.replace(/\\n/g, ' ')} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                <h3 className="absolute top-[15px] md:top-[25px] lg:top-[25px] xl:top-[30px] left-[15px] md:left-[25px] lg:left-[25px] xl:left-[30px] justify-start text-neutral-900 text-xl md:text-3xl lg:text-2xl xl:text-4xl font-normal leading-8 lg:leading-8 xl:leading-10"
+                <h3 className="absolute top-[15px] md:top-[25px] lg:top-[25px] xl:top-[30px] left-[15px] md:left-[25px] lg:left-[25px] xl:left-[30px] justify-start text-white text-xl md:text-3xl lg:text-2xl xl:text-4xl font-normal leading-8 lg:leading-8 xl:leading-10"
                   style={{ mixBlendMode: 'difference', WebkitMixBlendMode: 'difference', color: '#ffffff' }}
                 >
                   {data.title.split('\\n').map((line, i) => (
