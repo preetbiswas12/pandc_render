@@ -113,7 +113,9 @@ export function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
           <div ref={titleRef} className="absolute top-[20px] md:top-[40px] lg:top-[50px] xl:top-[60px] left-[20px] md:left-[40px] lg:left-[40px] xl:left-[60px] w-64 md:w-80 lg:w-72 xl:w-80 inline-flex flex-col justify-start items-start gap-5 lg:gap-6 xl:gap-7">
             <div className="self-stretch flex flex-col justify-start items-start gap-3 lg:gap-4 xl:gap-5">
-              <h2 className="text-white text-3xl md:text-5xl lg:text-6xl xl:text-8xl font-normal leading-tight lg:leading-[65px] xl:leading-[75px]">
+              <h2 className="text-white text-3xl md:text-5xl lg:text-6xl xl:text-8xl font-normal leading-tight lg:leading-[65px] xl:leading-[75px]"
+                style={{ mixBlendMode: 'difference', WebkitMixBlendMode: 'difference', color: '#ffffff' }}
+              >
                 {(heroMainBanner?.title || defaultHeroMain.title).split('\\n').map((line, i) => (
                   <span key={i}>
                     {line}
@@ -121,7 +123,9 @@ export function HeroSection() {
                   </span>
                 ))}
               </h2>
-              <p className="self-stretch opacity-80 text-white text-xs md:text-sm lg:text-base xl:text-lg font-normal leading-5 lg:leading-5 xl:leading-6">
+              <p className="self-stretch opacity-80 text-white text-xs md:text-sm lg:text-base xl:text-lg font-normal leading-5 lg:leading-5 xl:leading-6"
+                style={{ mixBlendMode: 'difference', WebkitMixBlendMode: 'difference', color: '#ffffff' }}
+              >
                 {heroMainBanner?.subtitle || defaultHeroMain.subtitle}
               </p>
             </div>
@@ -141,7 +145,9 @@ export function HeroSection() {
               <Link key={index} to={data.link} className="hero-card w-full sm:flex-1 lg:flex-none lg:w-full h-[180px] sm:h-[240px] md:h-[300px] lg:h-[318px] xl:h-96 relative overflow-hidden rounded-[40px] group">
                 <div className="h-full w-full left-0 top-0 absolute bg-zinc-300" />
                 <img src={convertGoogleDriveLink(data.image)} alt={data.title.replace(/\\n/g, ' ')} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                <h3 className="absolute top-[15px] md:top-[25px] lg:top-[25px] xl:top-[30px] left-[15px] md:left-[25px] lg:left-[25px] xl:left-[30px] justify-start text-neutral-900 text-xl md:text-3xl lg:text-2xl xl:text-4xl font-normal leading-8 lg:leading-8 xl:leading-10">
+                <h3 className="absolute top-[15px] md:top-[25px] lg:top-[25px] xl:top-[30px] left-[15px] md:left-[25px] lg:left-[25px] xl:left-[30px] justify-start text-neutral-900 text-xl md:text-3xl lg:text-2xl xl:text-4xl font-normal leading-8 lg:leading-8 xl:leading-10"
+                  style={{ mixBlendMode: 'difference', WebkitMixBlendMode: 'difference', color: '#ffffff' }}
+                >
                   {data.title.split('\\n').map((line, i) => (
                     <span key={i}>
                       {line}
@@ -162,7 +168,7 @@ export function HeroSection() {
             Fabric<br />Collections
           </h2>
           <p className="text-xs md:text-sm lg:text-sm xl:text-base opacity-80 mb-4 md:mb-8 lg:mb-10 xl:mb-12 leading-5 lg:leading-5 xl:leading-6">
-            Explore our curated collections of premium fabrics crafted to inspire your creative projects and bring your vision to life.
+            Experience the finest fabric collections crafted for both premium fashion and everyday comfort at the best value.
           </p>
           <NoiseButton>
             BROWSE INSPIRATIONS
@@ -178,7 +184,9 @@ export function HeroSection() {
                 <div className="h-full w-full left-0 top-0 absolute bg-zinc-300" />
                 <img src={convertGoogleDriveLink(data.image)} alt={data.title.replace(/\\n/g, ' ')} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute bottom-4 md:bottom-5 lg:bottom-5 xl:bottom-6 left-4 md:left-5 lg:left-5 xl:left-6 right-4 md:right-5 lg:right-5 xl:right-6 bg-white/30 backdrop-blur-md rounded-full px-4 md:px-5 lg:px-5 xl:px-6 py-2 md:py-2.5 lg:py-2.5 xl:py-3 inline-flex items-center justify-center">
-                  <h3 className="text-neutral-900 text-sm md:text-base lg:text-base xl:text-lg font-semibold leading-5 lg:leading-5 xl:leading-6 text-center">
+                  <h3 className="text-neutral-900 text-sm md:text-base lg:text-base xl:text-lg font-semibold leading-5 lg:leading-5 xl:leading-6 text-center"
+                    style={{ mixBlendMode: 'difference', WebkitMixBlendMode: 'difference', color: '#ffffff' }}
+                  >
                     {data.title.split('\\n').map((line, i) => (
                       <span key={i}>
                         {line}
