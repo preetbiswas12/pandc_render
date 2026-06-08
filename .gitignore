@@ -8,6 +8,8 @@ node_modules/
 .env.local
 .env.*.local
 .env.production.local
+# Legacy env file (if any)
+env
 
 
 # Build outputs

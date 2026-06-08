@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Plus, Pencil, Trash2, X, FolderTree } from 'lucide-react';
-import { Category } from '../../services/database';
+import type { Category } from '../../services/database-enhanced';
 import { useApp } from '../../context/AppContext';
 
 export default function AdminCategories() {

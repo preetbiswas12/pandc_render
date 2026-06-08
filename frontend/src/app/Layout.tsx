@@ -8,7 +8,6 @@ import { useApp } from './context/AppContext';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Home, ShoppingBag, Heart, User, ShoppingCart as ShoppingCartIcon, Package } from 'lucide-react';
-import { CATEGORIES } from './types';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -98,8 +97,8 @@ export default function Layout() {
   return (
     <div ref={appRef} className="min-h-screen bg-white flex flex-col">
       <div className="w-full pb-24 md:pb-28 flex-1">
-        <Navbar />
-        
+        <Navbar cartCount={totalCartItems} wishlistCount={wishlist.length} />
+
         <main>
           <Outlet />
         </main>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Pencil, X } from 'lucide-react';
-import { Banner } from '../../services/database';
+import type { Banner } from '../../services/database-enhanced';
 import { useApp } from '../../context/AppContext';
 import { convertGoogleDriveLink } from '../../../lib/googleDriveUtils';
 

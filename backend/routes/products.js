@@ -18,10 +18,7 @@ router.get('/', async (req, res) => {
     const limit = Math.min(50, Math.max(1, limitParam));
     const skip = (page - 1) * limit;
 
-    console.log(`[Products] === REQUEST DEBUG ===`);
-    console.log(`[Products] Query params:`, req.query);
-    console.log(`[Products] minPrice param: ${req.query.minPrice} (type: ${typeof req.query.minPrice})`);
-    console.log(`[Products] maxPrice param: ${req.query.maxPrice} (type: ${typeof req.query.maxPrice})`);
+    console.log(`[Products] Query params: page=${page}, limit=${limit}, category=${req.query.category}, subCategory=${req.query.subCategory}, color=${req.query.color}, minPrice=${req.query.minPrice}, maxPrice=${req.query.maxPrice}`);
 
     // ⚠️ DEFENSIVE: Build filter query with validation
     const filter = {};
@@ -293,53 +290,5 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// 🔍 DEBUG ENDPOINT: Check all product prices in database
-router.get('/debug/verify-prices', async (req, res) => {
-  try {
-    const { minPrice, maxPrice } = req.query;
-    
-    // Query all products to check price distribution
-    const allProducts = await Product.find({}).select('name price').lean().exec();
-    
-    // Calculate price statistics
-    const prices = allProducts.map(p => p.price || 0);
-    const stats = {
-      totalProducts: allProducts.length,
-      minPrice: Math.min(...prices),
-      maxPrice: Math.max(...prices),
-      avgPrice: Math.round(prices.reduce((a, b) => a + b, 0) / prices.length)
-    };
-    
-    // Get products in the requested range (if provided)
-    let filteredProducts = allProducts;
-    if (minPrice !== undefined && maxPrice !== undefined) {
-      const min = parseFloat(minPrice);
-      const max = parseFloat(maxPrice);
-      filteredProducts = allProducts.filter(p => p.price >= min && p.price <= max);
-    }
-    
-    // Get price distribution buckets
-    const buckets = {
-      '0-1000': allProducts.filter(p => p.price <= 1000).length,
-      '1000-5000': allProducts.filter(p => p.price > 1000 && p.price <= 5000).length,
-      '5000-10000': allProducts.filter(p => p.price > 5000 && p.price <= 10000).length,
-      '10000+': allProducts.filter(p => p.price > 10000).length,
-    };
-    
-    res.json({
-      success: true,
-      stats,
-      priceDistribution: buckets,
-      filteredCount: filteredProducts.length,
-      sampleProducts: filteredProducts.slice(0, 5).map(p => ({
-        name: p.name?.substring(0, 40),
-        price: p.price
-      }))
-    });
-  } catch (err) {
-    console.error('[Products] Debug error:', err.message);
-    res.status(500).json({ success: false, message: 'Debug error: ' + err.message });
-  }
-});
 
 module.exports = router;

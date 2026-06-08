@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Search, Eye, CheckCircle, Clock, Truck, XCircle, Package, X, ShoppingCart } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { Order } from '../../services/database';
+import type { Order } from '../../services/database-enhanced';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function AdminOrders() {

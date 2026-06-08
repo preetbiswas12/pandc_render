@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, Edit, Trash2, X, Eye, EyeOff, ChevronUp, ChevronDown } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { Banner } from '../../services/database';
+import type { Banner } from '../../services/database-enhanced';
 import { convertGoogleDriveLink } from '../../../lib/googleDriveUtils';
 import { GoogleDrivePicker } from '../../components/GoogleDrivePicker';
 

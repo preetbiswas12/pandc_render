@@ -25,13 +25,14 @@ export function TrendingSection({ onAddToCart, wishlist, onToggleWishlist }: Tre
   const filteredProducts = selectedCategory === 'ALL' 
     ? products.slice(0, 6) // Show first 6 products for 'ALL'
     : (() => {
-        // Find the category ID/slug that matches the selected category name
+        // Find the category that matches the selected category name
         const selectedCat = categories.find(cat => cat.name === selectedCategory);
         if (!selectedCat) return [];
-        // Filter by category ID or slug
-        return products.filter(p => 
-          p.category === selectedCat._id || 
-          p.category === selectedCat.slug
+        // Filter by category — support ID, slug, or name (products may store any of these)
+        return products.filter(p =>
+          p.category === selectedCat._id ||
+          p.category === selectedCat.slug ||
+          p.category === selectedCat.name
         ).slice(0, 6);
       })();
 

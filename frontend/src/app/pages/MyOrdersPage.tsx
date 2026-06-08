@@ -4,7 +4,7 @@ import { Package, Truck, CheckCircle, Clock, XCircle, ChevronRight } from 'lucid
 import { useUser } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
 import { NoiseButton } from '@/components/ui/noise-button';
-import { Order } from '../services/database';
+import type { Order } from '../services/database-enhanced';
 
 export default function MyOrdersPage() {
   const navigate = useNavigate();

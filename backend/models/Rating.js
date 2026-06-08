@@ -63,7 +63,7 @@ ratingSchema.index({ productId: 1, userId: 1 }, { unique: true });
 
 // Update updatedAt before saving
 ratingSchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
+  this.updatedAt = new Date();
   next();
 });
 

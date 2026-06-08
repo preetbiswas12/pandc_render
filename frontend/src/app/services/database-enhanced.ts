@@ -409,13 +409,11 @@ class MongoDBService {
         queryParams.append('color', String(params.color).trim());
       }
 
-      // Handle price range - only add if meaningful
-      if (typeof params.minPrice === 'number' && !isNaN(params.minPrice) && params.minPrice !== 5000) {
-        // Always send minPrice if it's set (even if 0), but skip if it's the default max value
+      // Handle price range - send to API for server-side filtering
+      if (typeof params.minPrice === 'number' && !isNaN(params.minPrice) && params.minPrice > 0) {
         queryParams.append('minPrice', String(Math.max(0, params.minPrice)));
       }
-      if (typeof params.maxPrice === 'number' && !isNaN(params.maxPrice) && params.maxPrice !== 5000) {
-        // Always send maxPrice if it's set and not the default max
+      if (typeof params.maxPrice === 'number' && !isNaN(params.maxPrice) && params.maxPrice > 0) {
         queryParams.append('maxPrice', String(Math.max(0, params.maxPrice)));
       }
 

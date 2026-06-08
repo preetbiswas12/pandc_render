@@ -11,7 +11,7 @@ interface NavbarProps {
   wishlistCount?: number;
 }
 
-export function Navbar({ }: NavbarProps) {
+export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
   const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);

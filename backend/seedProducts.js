@@ -137,7 +137,7 @@ const seedProducts = async () => {
         offerPercentage: offerPercentage,
         quantity: parseInt(row.stock) || 0,
         category: categoryId || categoryName, // Use ID if found, otherwise name
-        subCategory: row.category || 'General',
+        subCategory: row.subCategory || 'General',
         fabricType: 'Premium Fabric',
         careInstructions: 'Gentle hand wash in cold water. Dry in shade to maintain color vibrancy.',
         description: row.description || '',

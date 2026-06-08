@@ -120,33 +120,34 @@ const validatePincode = (pincode) => {
 const getFallbackShippingCost = (pincode) => {
   const pincodeStr = String(pincode).substring(0, 3);
   
-  // ZONE 1: Delhi, NCR, Noida (Warehouse location) - CLOSEST
-  const zone1Patterns = ['110', '111', '112', '113', '114', '115', '116', '117', '118', '119', '120', '121', '122', '123', '124', '125', '126', '127', '128', '129', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210'];
-  if (zone1Patterns.includes(pincodeStr)) {
+  // ZONE 1: Delhi NCR & immediate vicinity (warehouse: 201304 Noida) - CLOSEST
+  // Delhi (110), Noida/Greater Noida/Gurgaon (121-122-123-124-125), Ghaziabad (201-202-203-204-205-206-207-208-209-210)
+  const zone1Patterns = new Set(['110', '121', '122', '123', '124', '125', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210']);
+  if (zone1Patterns.has(pincodeStr)) {
     return 70; // Minimum: Local delivery
   }
 
-  // ZONE 2: Jaipur & Rajasthan (500-600 km)
-  const zone2Patterns = ['300', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310'];
-  if (zone2Patterns.includes(pincodeStr)) {
+  // ZONE 2: Jaipur & Rajasthan nearby (500-600 km)
+  const zone2Patterns = new Set(['300', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310']);
+  if (zone2Patterns.has(pincodeStr)) {
     return 75;
   }
 
-  // ZONE 3: Haryana, Himachal Pradesh (300-400 km)
-  const zone3Patterns = ['121', '122', '123', '124', '125', '126', '127', '128', '129', '130', '131', '132', '170', '171', '172', '173', '174', '175', '176', '177', '178', '179'];
-  if (zone3Patterns.includes(pincodeStr)) {
+  // ZONE 3: Haryana & Himachal Pradesh (300-400 km) — NOTE: no overlap with Zone 1
+  const zone3Patterns = new Set(['126', '127', '128', '129', '130', '131', '132', '170', '171', '172', '173', '174', '175', '176', '177', '178', '179']);
+  if (zone3Patterns.has(pincodeStr)) {
     return 80;
   }
 
   // ZONE 4: Punjab & Chandigarh (300-350 km)
-  const zone4Patterns = ['140', '141', '142', '143', '144', '145', '146', '147', '148', '149', '160', '161', '162', '163', '164'];
-  if (zone4Patterns.includes(pincodeStr)) {
+  const zone4Patterns = new Set(['140', '141', '142', '143', '144', '145', '146', '147', '148', '149', '160', '161', '162', '163', '164']);
+  if (zone4Patterns.has(pincodeStr)) {
     return 85;
   }
 
-  // ZONE 5: Uttar Pradesh (200-400 km)
-  const zone5Patterns = ['201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218', '219', '220', '221', '222', '223', '224', '225', '226', '227', '228', '229'];
-  if (zone5Patterns.includes(pincodeStr)) {
+  // ZONE 5: Rest of Uttar Pradesh & Uttarakhand (200-400 km) — NOTE: no overlap with Zone 1
+  const zone5Patterns = new Set(['211', '212', '213', '214', '215', '216', '217', '218', '219', '220', '221', '222', '223', '224', '225', '226', '227', '228', '229', '230', '231', '232', '233', '234', '235', '236', '237', '238', '239', '240', '241', '242', '243', '244', '245', '246', '247', '248', '249', '250', '251']);
+  if (zone5Patterns.has(pincodeStr)) {
     return 80;
   }
 

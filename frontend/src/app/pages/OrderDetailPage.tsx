@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router';
 import { Package, Truck, CheckCircle, Clock, XCircle, MapPin, Mail, Phone, User } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { NoiseButton } from '@/components/ui/noise-button';
-import { Order } from '../services/database';
+import type { Order } from '../services/database-enhanced';
 
 export default function OrderDetailPage() {
   const { orderId } = useParams();

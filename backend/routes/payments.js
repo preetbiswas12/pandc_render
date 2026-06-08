@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 const Order = require('../models/Order');
 const {
   createOrder,
@@ -190,12 +191,14 @@ router.post('/verify', async (req, res) => {
       });
     }
 
-    // Verify amount matches
-    if (Math.abs(paymentDetails.data.amount - order.total) > 0.01) {
+    // Verify amount matches (paymentDetails.data.amount is in paise, order.total is in rupees)
+    const expectedAmountInPaise = Math.round(order.total * 100);
+    if (Math.abs(paymentDetails.data.amount - expectedAmountInPaise) > 0) {
       log('error', 'Payment amount mismatch', {
         orderId,
-        expectedAmount: order.total,
-        receivedAmount: paymentDetails.data.amount,
+        expectedAmountInRupees: order.total,
+        expectedAmountInPaise,
+        receivedAmountInPaise: paymentDetails.data.amount,
       });
       return res.status(400).json({
         success: false,
@@ -244,12 +247,30 @@ router.post('/verify', async (req, res) => {
  */
 router.post('/webhook', async (req, res) => {
   try {
-    const { event, payload } = req.body;
+    // Parse raw body (express.raw middleware provides Buffer)
+    const body = JSON.parse(req.body.toString());
+    const { event, payload } = body;
 
     log('info', 'Webhook received', { event });
 
-    // Verify webhook signature if Razorpay provides it
-    // (Optional: Add webhook signature verification for additional security)
+    // ⚠️ CRITICAL: Verify webhook signature for security
+    const razorpaySignature = req.headers['x-razorpay-signature'];
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+
+    if (webhookSecret && webhookSecret !== 'CHANGE_ME_SET_FROM_RAZORPAY_DASHBOARD' && razorpaySignature) {
+      const expectedSignature = crypto
+        .createHmac('sha256', webhookSecret)
+        .update(req.body)
+        .digest('hex');
+
+      if (expectedSignature !== razorpaySignature) {
+        log('warn', 'Webhook signature verification failed', { event });
+        return res.status(400).json({ received: false, error: 'Invalid signature' });
+      }
+      log('info', 'Webhook signature verified');
+    } else if (webhookSecret === 'CHANGE_ME_SET_FROM_RAZORPAY_DASHBOARD') {
+      log('warn', 'Webhook secret not configured — skipping signature verification');
+    }
 
     // Handle different payment events
     switch (event) {

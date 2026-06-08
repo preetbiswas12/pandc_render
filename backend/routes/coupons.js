@@ -102,10 +102,18 @@ router.put('/:id', async (req, res) => {
 // Delete coupon
 router.delete('/:id', async (req, res) => {
   try {
-    await Coupon.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: 'Coupon deleted' });
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid coupon ID format' });
+    }
+
+    const coupon = await Coupon.findByIdAndDelete(req.params.id);
+    if (!coupon) {
+      return res.status(404).json({ success: false, message: 'Coupon not found' });
+    }
+    res.json({ success: true, message: 'Coupon deleted', data: coupon });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[Coupons] Delete error:', err.message);
+    res.status(500).json({ success: false, message: 'Failed to delete coupon' });
   }
 });
 

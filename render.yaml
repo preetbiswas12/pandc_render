@@ -6,19 +6,49 @@ services:
     rootDir: .
     buildCommand: cd frontend && pnpm install && pnpm build && cd ../backend && pnpm install
     startCommand: cd backend && pnpm start
-    
+
     # Environment variables
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 5000
-    
+      # ⚠️ CRITICAL: Set these in Render dashboard as secret values
+      # Do NOT commit actual secrets to source control
+      - key: MONGODB_URI
+        sync: false  # Set in Render dashboard
+      - key: JWT_SECRET
+        sync: false  # Set in Render dashboard — generate with: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+      - key: RAZORPAY_KEY_ID
+        sync: false  # Set in Render dashboard
+      - key: RAZORPAY_KEY_SECRET
+        sync: false  # Set in Render dashboard
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false  # Set from Razorpay dashboard
+      - key: CLOUDINARY_API_KEY
+        sync: false  # Set in Render dashboard
+      - key: CLOUDINARY_API_SECRET
+        sync: false  # Set in Render dashboard
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dbyx7n0ys
+      - key: SHIPROCKET_API_KEY
+        sync: false  # Set in Render dashboard
+      - key: CORS_ORIGIN
+        value: https://pandctexfab.com
+      - key: VITE_API_URL
+        value: https://pandctexfab.com/api
+      - key: VITE_RAZORPAY_KEY_ID
+        sync: false  # Set in Render dashboard (public key only)
+      - key: VITE_MOCK_PAYMENTS
+        value: "false"
+      - key: VITE_DEBUG_MODE
+        value: "false"
+
     # Auto-deploy when main branch is updated
     autoDeploy: true
-    
-    # Health check - improved for reliability
-    healthCheckPath: /api/health
-    healthCheckInterval: 10
-    healthCheckTimeout: 5
+
+    # Health check
+    healthCheckPath: /health
+    healthCheckInterval: 15
+    healthCheckTimeout: 10
     healthCheckInitialDelay: 30

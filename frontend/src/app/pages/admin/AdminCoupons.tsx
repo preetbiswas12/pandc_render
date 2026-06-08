@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, Edit, Trash2, X, Tag } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { Coupon } from '../../services/database';
+import type { Coupon } from '../../services/database-enhanced';
 
 export default function AdminCoupons() {
   const { coupons, createCoupon, updateCoupon, deleteCoupon: deleteCouponDB } = useApp();

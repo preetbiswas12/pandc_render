@@ -17,20 +17,38 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Generate slug from name
+const generateSlug = (name) => {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-');
+};
+
 // Create category
 router.post('/', async (req, res) => {
   try {
     const { name } = req.body;
-    
+
     if (!name || name.trim() === '') {
       return res.status(400).json({ success: false, message: 'Category name is required' });
     }
-    
-    const category = new Category(req.body);
+
+    // Auto-generate slug if not provided
+    const categoryData = {
+      ...req.body,
+      slug: req.body.slug || generateSlug(name),
+    };
+
+    const category = new Category(categoryData);
     const newCategory = await category.save();
     res.status(201).json({ success: true, data: newCategory });
   } catch (err) {
     console.error('[Categories] Create error:', err.message);
+    if (err.code === 11000) {
+      return res.status(400).json({ success: false, message: 'Category with this name or slug already exists' });
+    }
     res.status(400).json({ success: false, message: 'Failed to create category: ' + err.message });
   }
 });

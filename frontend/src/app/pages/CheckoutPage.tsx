@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { useUser } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
@@ -323,9 +323,19 @@ export default function CheckoutPage() {
     );
   }
 
+  // Redirect to cart if empty (done in useEffect to avoid render-phase navigation)
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate('/cart');
+    }
+  }, [cartItems.length, navigate]);
+
   if (cartItems.length === 0) {
-    navigate('/cart');
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="animate-spin" size={40} />
+      </div>
+    );
   }
 
   return (

@@ -14,7 +14,53 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Simple in-memory rate limiter (no external dependency)
+const rateLimitStore = new Map();
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const RATE_LIMIT_MAX_REQUESTS = 100; // Max requests per window per IP
+
+function rateLimiter(req, res, next) {
+  // Skip rate limiting for health checks
+  if (req.path === '/health' || req.path === '/api/health') return next();
+
+  const ip = req.ip || req.connection.remoteAddress || 'unknown';
+  const now = Date.now();
+
+  if (!rateLimitStore.has(ip)) {
+    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return next();
+  }
+
+  const record = rateLimitStore.get(ip);
+  if (now > record.resetTime) {
+    record.count = 1;
+    record.resetTime = now + RATE_LIMIT_WINDOW_MS;
+    return next();
+  }
+
+  record.count++;
+  if (record.count > RATE_LIMIT_MAX_REQUESTS) {
+    return res.status(429).json({
+      success: false,
+      message: 'Too many requests. Please try again later.',
+    });
+  }
+
+  next();
+}
+
+// Cleanup old entries every 30 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, record] of rateLimitStore.entries()) {
+    if (now > record.resetTime) {
+      rateLimitStore.delete(ip);
+    }
+  }
+}, 30 * 60 * 1000);
+
 // Middleware
+app.use(rateLimiter);
 const corsOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
@@ -31,6 +77,9 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
 app.use(compression()); // ⚠️ OPTIMIZED: Enable gzip compression for faster responses
+// ⚠️ CRITICAL: Webhook route needs raw body for signature verification
+// This must be before express.json() so webhook gets unparsed body
+app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 
 // Cache-busting headers for production
@@ -109,6 +158,8 @@ app.use('/api/ratings', ratingRoutes);
 app.use('/api/admin/auth', adminAuthRoutes);
 
 // Protected Admin Routes (require authentication)
+// ⚠️ NOTE: These reuse the same route handlers but behind adminAuth middleware.
+// For production, consider creating separate admin route handlers with stricter validation.
 app.use('/api/admin/products', adminAuth, productRoutes);
 app.use('/api/admin/orders', adminAuth, orderRoutes);
 app.use('/api/admin/coupons', adminAuth, couponRoutes);
