@@ -32,7 +32,7 @@ const productSchema = new mongoose.Schema({
   },
   subCategory: {
     type: String,
-    required: true,
+    default: '',
     index: true, // Index for subcategory filtering
   },
   fabricType: {

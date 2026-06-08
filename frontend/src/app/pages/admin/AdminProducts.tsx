@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Plus, Search, Edit, Trash2, X, Upload, Image as ImageIcon } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { convertGoogleDriveLink } from '../../../lib/googleDriveUtils';
@@ -12,6 +12,7 @@ export default function AdminProducts() {
   const [editingProduct, setEditingProduct] = useState<typeof products[0] | null>(null);
   const [uploadingImages, setUploadingImages] = useState(false);
   const [showGoogleDrivePicker, setShowGoogleDrivePicker] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -112,7 +113,7 @@ export default function AdminProducts() {
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        
+
         // Check if it's an image
         if (!file.type.startsWith('image/')) {
           alert(`${file.name} is not an image file`);
@@ -124,15 +125,20 @@ export default function AdminProducts() {
         resizedImages.push(resizedDataUrl);
       }
 
-      // Add new images to existing ones
+      // Add new images to existing ones, avoiding duplicates
       const currentImages = formData.images ? formData.images.split(',').map(img => img.trim()).filter(Boolean) : [];
-      const allImages = [...currentImages, ...resizedImages];
+      const uniqueNew = resizedImages.filter(img => !currentImages.includes(img));
+      const allImages = [...currentImages, ...uniqueNew];
       setFormData(prev => ({ ...prev, images: allImages.join(', ') }));
-      
+
     } catch (error) {
       alert('Error uploading images: ' + (error as Error).message);
     } finally {
       setUploadingImages(false);
+      // Reset file input so the same files can be selected again
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -140,11 +146,12 @@ export default function AdminProducts() {
   const handleGoogleDriveImages = (urls: string[]) => {
     if (!urls || urls.length === 0) return;
 
-    // Add new images to existing ones
+    // Add new images to existing ones, avoiding duplicates
     const currentImages = formData.images ? formData.images.split(',').map(img => img.trim()).filter(Boolean) : [];
-    const allImages = [...currentImages, ...urls];
+    const uniqueNew = urls.filter(url => url && url.trim() && !currentImages.includes(url.trim()));
+    const allImages = [...currentImages, ...uniqueNew];
     setFormData(prev => ({ ...prev, images: allImages.join(', ') }));
-    
+
     // Reset state
     setShowGoogleDrivePicker(false);
   };
@@ -295,9 +302,9 @@ export default function AdminProducts() {
     return price - (price * offerPercentage / 100);
   };
 
-  // Get image preview URLs
+  // Get image preview URLs (deduplicated)
   const getImagePreviews = () => {
-    return formData.images.split(',').map(img => img.trim()).filter(Boolean);
+    return formData.images.split(',').map(img => img.trim()).filter(Boolean).filter((img, idx, arr) => arr.indexOf(img) === idx);
   };
 
   return (
@@ -491,9 +498,8 @@ export default function AdminProducts() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Sub Category *</label>
+                  <label className="block text-sm font-medium mb-2">Sub Category</label>
                   <select
-                    required
                     value={formData.subCategory}
                     onChange={(e) => setFormData(prev => ({ ...prev, subCategory: e.target.value }))}
                     disabled={!formData.category}
@@ -539,6 +545,7 @@ export default function AdminProducts() {
                       <Upload size={20} />
                       <span>{uploadingImages ? 'Processing...' : 'Upload Images'}</span>
                       <input
+                        ref={fileInputRef}
                         type="file"
                         multiple
                         accept="image/*"
