@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Plus, Search, Edit, Trash2, X, Upload, Image as ImageIcon } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, X, Upload, Image as ImageIcon, ChevronDown } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { convertGoogleDriveLink } from '../../../lib/googleDriveUtils';
 import { GoogleDrivePicker } from '../../components/GoogleDrivePicker';
@@ -12,6 +12,7 @@ export default function AdminProducts() {
   const [editingProduct, setEditingProduct] = useState<typeof products[0] | null>(null);
   const [uploadingImages, setUploadingImages] = useState(false);
   const [showGoogleDrivePicker, setShowGoogleDrivePicker] = useState(false);
+  const [isAddProductDropdownOpen, setIsAddProductDropdownOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
@@ -314,6 +315,17 @@ export default function AdminProducts() {
     }
   };
 
+  const openAddModal = (productType: 'fabric' | 'saree') => {
+    resetForm();
+    setFormData(prev => ({
+      ...prev,
+      productType,
+      unit: productType === 'saree' ? 'pieces' : 'meters',
+    }));
+    setIsModalOpen(true);
+    setIsAddProductDropdownOpen(false);
+  };
+
   const filteredProducts = products.filter(p =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.sku.toLowerCase().includes(searchTerm.toLowerCase())
@@ -338,13 +350,37 @@ export default function AdminProducts() {
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2">Products</h1>
           <p className="text-xs sm:text-sm md:text-base opacity-70">{products.length} total products</p>
         </div>
-        <button
-          onClick={() => openModal()}
-          className="w-full sm:w-auto bg-blue-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg sm:rounded-full font-medium hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
-        >
-          <Plus size={18} className="sm:w-5 sm:h-5" />
-          <span>Add Product</span>
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => setIsAddProductDropdownOpen(!isAddProductDropdownOpen)}
+            className="w-full sm:w-auto bg-blue-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg sm:rounded-full font-medium hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
+          >
+            <Plus size={18} className="sm:w-5 sm:h-5" />
+            <span>Add Product</span>
+            <ChevronDown size={16} className="sm:w-4 sm:h-4" />
+          </button>
+          {isAddProductDropdownOpen && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setIsAddProductDropdownOpen(false)} />
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 overflow-hidden">
+                <button
+                  onClick={() => openAddModal('fabric')}
+                  className="w-full text-left px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                >
+                  <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                  Add Fabric
+                </button>
+                <button
+                  onClick={() => openAddModal('saree')}
+                  className="w-full text-left px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2 border-t border-gray-100"
+                >
+                  <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                  Add Saree
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Search */}
@@ -367,8 +403,13 @@ export default function AdminProducts() {
           const discountedPrice = calculateDiscountedPrice(product.price, product.offerPercentage);
           return (
              <div key={product._id} className="bg-white rounded-lg md:rounded-2xl overflow-hidden">
-               <div className="aspect-square bg-gray-100">
+               <div className="aspect-square bg-gray-100 relative">
                  <img src={convertGoogleDriveLink(product.images[0])} alt={product.name} className="w-full h-full object-cover" />
+                 <span className={`absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                   product.unit === 'pieces' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
+                 }`}>
+                   {product.unit === 'pieces' ? 'Saree' : 'Fabric'}
+                 </span>
                </div>
                <div className="p-2 sm:p-3 md:p-6">
                  <h3 className="text-xs sm:text-base md:text-lg font-semibold mb-1 line-clamp-2">{product.name}</h3>

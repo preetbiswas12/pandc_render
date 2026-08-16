@@ -193,7 +193,9 @@ export default function ProductDetailPage() {
 
             {/* Quantity */}
             <div>
-              <label className="block text-xs md:text-sm font-medium mb-2">Quantity {product.unit === 'pieces' ? '(pieces)' : '(in meters)'}</label>
+              <label className="block text-xs md:text-sm font-medium mb-2">
+                {product.unit === 'pieces' ? 'Quantity' : 'Quantity (in meters)'}
+              </label>
               <div className="flex items-center gap-3 md:gap-4">
                 <button
                   onClick={() => {
@@ -212,7 +214,9 @@ export default function ProductDetailPage() {
                   +
                 </button>
               </div>
-              <p className="text-xs opacity-70 mt-2">{product.unit === 'pieces' ? 'Minimum order: 1 piece' : 'Minimum order: 2 meters'}</p>
+              {product.unit !== 'pieces' && (
+                <p className="text-xs opacity-70 mt-2">Minimum order: 2 meters</p>
+              )}
             </div>
 
             {/* Actions */}
