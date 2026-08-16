@@ -285,7 +285,7 @@ export default function ProductDetailPage() {
             {/* Description */}
             {product.description && (
               <div className="border-t pt-4 md:pt-6">
-                <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Description</h3>
+                <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Disclaimer</h3>
                 <p className="text-sm md:text-base leading-relaxed opacity-80">
                   {product.description}
                 </p>
