@@ -29,6 +29,7 @@ export default function AdminProducts() {
     unit: 'meters',
     productType: 'fabric',
     fabricType: '',
+    sareeType: '',
     careInstructions: '',
     colors: '',
     features: ''
@@ -49,6 +50,7 @@ export default function AdminProducts() {
       unit: 'meters',
       productType: 'fabric',
       fabricType: '',
+      sareeType: '',
       careInstructions: '',
       colors: '',
       features: ''
@@ -169,12 +171,17 @@ export default function AdminProducts() {
           productType: type,
           unit: 'pieces',
           category: sareeCategory ? sareeCategory._id : prev.category,
+          fabricType: '',
+          sareeType: prev.sareeType || '',
+          width: '',
         };
       }
       return {
         ...prev,
         productType: type,
         unit: 'meters',
+        sareeType: '',
+        fabricType: prev.fabricType || '',
       };
     });
   };
@@ -200,6 +207,7 @@ export default function AdminProducts() {
               unit: fullProduct.unit || 'meters',
             productType: (fullProduct.unit || 'meters') === 'pieces' ? 'saree' : 'fabric',
             fabricType: fullProduct.fabricType || '',
+            sareeType: fullProduct.sareeType || '',
             careInstructions: fullProduct.careInstructions || '',
             colors: fullProduct.colors?.join(', ') || '',
             features: fullProduct.features?.join(', ') || ''
@@ -221,6 +229,7 @@ export default function AdminProducts() {
             unit: product.unit || 'meters',
             productType: product.unit === 'pieces' ? 'saree' : 'fabric',
             fabricType: product.fabricType || '',
+            sareeType: product.sareeType || '',
             careInstructions: product.careInstructions || '',
             colors: product.colors?.join(', ') || '',
             features: product.features?.join(', ') || ''
@@ -240,6 +249,7 @@ export default function AdminProducts() {
             description: product.description || '',
             sku: product.sku,
             productType: product.unit === 'pieces' ? 'saree' : 'fabric',
+            sareeType: product.sareeType || '',
         fabricType: product.fabricType || '',
         careInstructions: product.careInstructions || '',
           colors: product.colors?.join(', ') || '',
@@ -281,11 +291,12 @@ export default function AdminProducts() {
       price: parseFloat(formData.price),
       offerPercentage: parseFloat(formData.offerPercentage) || 0,
       quantity: parseInt(formData.quantity),
-      width: parseFloat(formData.width) || 0,
+      width: formData.productType === 'saree' ? 0 : parseFloat(formData.width) || 0,
       unit: formData.unit || 'meters',
       category: formData.category,
       subCategory: formData.subCategory,
-      fabricType: formData.fabricType,
+      fabricType: formData.productType === 'saree' ? '' : formData.fabricType,
+      sareeType: formData.productType === 'saree' ? formData.sareeType : '',
       careInstructions: formData.careInstructions,
       description: formData.description,
       sku: formData.sku,
@@ -526,7 +537,7 @@ export default function AdminProducts() {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">Quantity *</label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 gap-2">
                     <input
                       type="number"
                       required
@@ -537,15 +548,17 @@ export default function AdminProducts() {
                       placeholder="Qty"
                     />
 
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      value={formData.width}
-                      onChange={(e) => setFormData(prev => ({ ...prev, width: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                      placeholder="Width (m)"
-                    />
+                    {formData.productType !== 'saree' && (
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={formData.width}
+                        onChange={(e) => setFormData(prev => ({ ...prev, width: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                        placeholder="Width (m)"
+                      />
+                    )}
 
                     <select
                       value={formData.unit}
@@ -588,15 +601,28 @@ export default function AdminProducts() {
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">Fabric Type</label>
-                  <input
-                    type="text"
-                    value={formData.fabricType}
-                    onChange={(e) => setFormData(prev => ({ ...prev, fabricType: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                  />
-                </div>
+                {formData.productType === 'saree' ? (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Saree Type</label>
+                    <input
+                      type="text"
+                      value={formData.sareeType}
+                      onChange={(e) => setFormData(prev => ({ ...prev, sareeType: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      placeholder="e.g., Silk, Cotton, Georgette"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Fabric Type</label>
+                    <input
+                      type="text"
+                      value={formData.fabricType}
+                      onChange={(e) => setFormData(prev => ({ ...prev, fabricType: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                    />
+                  </div>
+                )}
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium mb-2">Care Instructions</label>
