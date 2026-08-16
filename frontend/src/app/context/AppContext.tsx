@@ -256,19 +256,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     } as DBProduct);
-    await refreshProducts();
-    return { ...product, id: product._id };
+    const newProduct = { ...product, id: product._id } as Product;
+    setProducts(prev => [newProduct, ...prev]);
+    return newProduct;
   };
 
   const updateProduct = async (productId: string, productData: Partial<Product>) => {
     const { id, ...dataWithoutId } = productData;
-    await db.update<DBProduct>('products', productId, dataWithoutId);
-    await refreshProducts();
+    const updated = await db.update<DBProduct>('products', productId, dataWithoutId);
+    if (updated) {
+      const updatedProduct = { ...updated, id: updated._id } as Product;
+      setProducts(prev => prev.map(p => p.id === productId ? updatedProduct : p));
+    }
   };
 
   const deleteProduct = async (productId: string) => {
     await db.delete('products', productId);
-    await refreshProducts();
+    setProducts(prev => prev.filter(p => p.id !== productId));
   };
 
   // Coupon Management
@@ -279,18 +283,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     } as Coupon);
-    await refreshCoupons();
+    setCoupons(prev => [result, ...prev]);
     return result;
   };
 
   const updateCoupon = async (couponId: string, couponData: Partial<Coupon>) => {
-    await db.update<Coupon>('coupons', couponId, couponData);
-    await refreshCoupons();
+    const updated = await db.update<Coupon>('coupons', couponId, couponData);
+    if (updated) {
+      setCoupons(prev => prev.map(c => c._id === couponId ? updated : c));
+    }
   };
 
   const deleteCoupon = async (couponId: string) => {
     await db.delete('coupons', couponId);
-    await refreshCoupons();
+    setCoupons(prev => prev.filter(c => c._id !== couponId));
   };
 
   const validateCoupon = (code: string, orderValue: number) => {
@@ -330,18 +336,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     } as Banner);
-    await refreshBanners();
+    setBanners(prev => [result, ...prev]);
     return result;
   };
 
   const updateBanner = async (bannerId: string, bannerData: Partial<Banner>) => {
-    await db.update<Banner>('banners', bannerId, bannerData);
-    await refreshBanners();
+    const updated = await db.update<Banner>('banners', bannerId, bannerData);
+    if (updated) {
+      setBanners(prev => prev.map(b => b._id === bannerId ? updated : b));
+    }
   };
 
   const deleteBanner = async (bannerId: string) => {
     await db.delete('banners', bannerId);
-    await refreshBanners();
+    setBanners(prev => prev.filter(b => b._id !== bannerId));
   };
 
   // Category Management
@@ -351,18 +359,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     } as Category);
-    await refreshCategories();
+    setCategories(prev => [result, ...prev]);
     return result;
   };
 
   const updateCategory = async (categoryId: string, categoryData: Partial<Category>) => {
-    await db.update<Category>('categories', categoryId, categoryData);
-    await refreshCategories();
+    const updated = await db.update<Category>('categories', categoryId, categoryData);
+    if (updated) {
+      setCategories(prev => prev.map(c => c._id === categoryId ? updated : c));
+    }
   };
 
   const deleteCategory = async (categoryId: string) => {
     await db.delete('categories', categoryId);
-    await refreshCategories();
+    setCategories(prev => prev.filter(c => c._id !== categoryId));
   };
 
   return (

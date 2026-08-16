@@ -18,9 +18,7 @@ router.get('/', async (req, res) => {
     const limit = Math.min(50, Math.max(1, limitParam));
     const skip = (page - 1) * limit;
 
-    console.log(`[Products] Query params: page=${page}, limit=${limit}, category=${req.query.category}, subCategory=${req.query.subCategory}, color=${req.query.color}, minPrice=${req.query.minPrice}, maxPrice=${req.query.maxPrice}`);
-
-    // ⚠️ DEFENSIVE: Build filter query with validation
+    // Build filter query with validation
     const filter = {};
     
     // Filter by category - support category stored as ID, slug, or name
@@ -74,7 +72,6 @@ router.get('/', async (req, res) => {
         const minPrice = parseFloat(req.query.minPrice);
         if (!isNaN(minPrice) && minPrice >= 0) {
           filter.price.$gte = minPrice;
-          console.log(`[Products] ✓ Applied minPrice filter: $gte ${minPrice}`);
         }
       }
       
@@ -82,7 +79,6 @@ router.get('/', async (req, res) => {
         const maxPrice = parseFloat(req.query.maxPrice);
         if (!isNaN(maxPrice) && maxPrice >= 0) {
           filter.price.$lte = maxPrice;
-          console.log(`[Products] ✓ Applied maxPrice filter: $lte ${maxPrice}`);
         }
       }
     }
@@ -114,34 +110,15 @@ router.get('/', async (req, res) => {
       }
     }
 
-    console.log(`[Products] Filter: ${JSON.stringify(filter)}, Sort: ${JSON.stringify(sortOptions)}, Page: ${page}, Limit: ${limit}`);
-
-    // ⚠️ OPTIMIZED: Use lean() for faster queries - we don't need Mongoose document features
+    // Use lean() for faster queries - we don't need Mongoose document features
     const products = await Product.find(filter)
-      .select('name price offerPercentage quantity category subCategory images colors createdAt sku _id fabricType description careInstructions features')
+      .select('name price offerPercentage quantity category subCategory images colors createdAt sku _id fabricType sareeType description careInstructions features unit')
       .sort(sortOptions)
       .skip(skip)
       .limit(limit)
       .lean() // Returns plain JS objects instead of Mongoose documents
       .exec();
 
-    // 🔍 DEBUG: Log actual products returned and their prices
-    if (products.length > 0) {
-      console.log(`[Products] ✓ Query returned ${products.length} products`);
-      const priceRange = {
-        min: Math.min(...products.map(p => p.price || 0)),
-        max: Math.max(...products.map(p => p.price || 0))
-      };
-      console.log(`[Products] Price range in results: ₹${priceRange.min} - ₹${priceRange.max}`);
-      console.log(`[Products] Sample products (first 3):`, products.slice(0, 3).map(p => ({
-        name: p.name?.substring(0, 30),
-        price: p.price
-      })));
-    } else {
-      console.log(`[Products] ⚠️ Query returned 0 products with filter:`, JSON.stringify(filter));
-    }
-
-    // ⚠️ DEFENSIVE: Get total count for pagination info with error handling
     let total = 0;
     try {
       total = await Product.countDocuments(filter);

@@ -15,6 +15,7 @@ export interface Product {
   category: string;
   subCategory: string;
   fabricType: string;
+  sareeType: string;
   careInstructions: string;
   description: string;
   images: string[];
@@ -300,11 +301,10 @@ class MongoDBService {
       });
       const result: ApiResponse<T & { _id: string; createdAt: string; updatedAt: string }> = await response.json();
       if (result.success && result.data) {
-        const allData = await this.getAll(collection);
-        this.notifyListeners(collection, allData);
-        return result.data;
+        const newItem = result.data;
+        this.notifyListeners(collection, [newItem]);
+        return newItem;
       }
-      // Include the backend error message in the thrown error
       const errorMessage = result.error || result.message || 'Failed to create item';
       throw new Error(errorMessage);
     } catch (error) {
@@ -322,9 +322,9 @@ class MongoDBService {
       });
       const result: ApiResponse<T> = await response.json();
       if (result.success && result.data) {
-        const allData = await this.getAll(collection);
-        this.notifyListeners(collection, allData);
-        return result.data;
+        const updatedItem = result.data;
+        this.notifyListeners(collection, [updatedItem]);
+        return updatedItem;
       }
       return null;
     } catch (error) {
@@ -340,8 +340,7 @@ class MongoDBService {
       });
       const result: ApiResponse<null> = await response.json();
       if (result.success) {
-        const allData = await this.getAll(collection);
-        this.notifyListeners(collection, allData);
+        this.notifyListeners(collection, []);
         return true;
       }
       return false;

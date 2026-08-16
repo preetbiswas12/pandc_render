@@ -5,10 +5,13 @@ import type { Order } from '../../services/database-enhanced';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function AdminOrders() {
-  const { orders, updateOrderStatus } = useApp();
+  const { orders, products, updateOrderStatus } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | Order['status']>('all');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  const fabricCount = products.filter(p => p.unit === 'meters').length;
+  const sareeCount = products.filter(p => p.unit === 'pieces').length;
 
   const filteredOrders = orders.filter(order => {
     const matchesSearch =
@@ -93,7 +96,7 @@ export default function AdminOrders() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-8 gap-4">
         {[
           { label: 'Total', value: orderStats.total, icon: <ShoppingCart />, color: 'slate' },
           { label: 'Pending', value: orderStats.pending, icon: <Clock />, color: 'yellow' },
@@ -101,6 +104,8 @@ export default function AdminOrders() {
           { label: 'Shipped', value: orderStats.shipped, icon: <Truck />, color: 'purple' },
           { label: 'Delivered', value: orderStats.delivered, icon: <CheckCircle />, color: 'green' },
           { label: 'Cancelled', value: orderStats.cancelled, icon: <XCircle />, color: 'red' },
+          { label: 'Fabrics', value: fabricCount, icon: <Package />, color: 'blue' },
+          { label: 'Sarees', value: sareeCount, icon: <Package />, color: 'purple' },
         ].map((item, i) => (
           <div key={i} className="bg-white p-4 rounded-xl border shadow-sm">
             <p className="text-sm text-slate-500">{item.label}</p>
