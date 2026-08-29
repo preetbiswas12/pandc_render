@@ -53,8 +53,20 @@ VITE_FREE_SHIPPING_THRESHOLD=1999
 |---------|-------------|
 | `npm run dev` | Start development server |
 | `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
+| `npm run preview` | Preview production build locally |
 | `npm run lint` | Run ESLint |
+
+## Deploying to Render
+
+This is a static site. Deploy as a **Static Site** on Render:
+
+- **Build command**: `npm install && npm run build`
+- **Publish directory**: `dist`
+- **Node version**: 22.x (or latest)
+
+No start command needed — Render serves the static files from `dist` directly.
+
+Make sure all environment variables (Supabase, Razorpay) are set in Render's dashboard under Environment Variables.
 
 ## Project Structure
 
