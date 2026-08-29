@@ -193,14 +193,14 @@ export default function HomePage() {
                 <div className="absolute inset-0 rounded-3xl border border-white/10 pointer-events-none" />
               </div>
               {/* Floating stats */}
-              <div className="absolute -bottom-4 -left-4 md:-left-8 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl px-5 py-3 shadow-xl">
-                <p className="text-2xl font-bold text-white">500+</p>
-                <p className="text-xs text-[#a0a4b0]">Fabric Types</p>
-              </div>
-              <div className="absolute -top-2 -right-4 md:-right-8 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl px-5 py-3 shadow-xl">
-                <p className="text-2xl font-bold text-white">4.9</p>
-                <p className="text-xs text-[#a0a4b0]">Customer Rating</p>
-              </div>
+               <div className="absolute -bottom-3 -left-3 md:-bottom-4 md:-left-8 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl px-3 py-2 md:px-5 md:py-3 shadow-xl">
+                 <p className="text-lg md:text-2xl font-bold text-white">500+</p>
+                 <p className="text-[10px] md:text-xs text-[#a0a4b0]">Fabric Types</p>
+               </div>
+               <div className="absolute -top-2 -right-3 md:-top-2 md:-right-8 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl px-3 py-2 md:px-5 md:py-3 shadow-xl">
+                 <p className="text-lg md:text-2xl font-bold text-white">4.9</p>
+                 <p className="text-[10px] md:text-xs text-[#a0a4b0]">Customer Rating</p>
+               </div>
             </div>
           </div>
         </div>
@@ -226,26 +226,26 @@ export default function HomePage() {
                 Save up to 40%
               </p>
 
-              {/* Countdown timer */}
-               <div className="flex gap-3 mb-8">
-                 {[
-                   { value: String(countdown.hours).padStart(2, '0'), label: 'HOURS' },
-                   { value: String(countdown.minutes).padStart(2, '0'), label: 'MINUTES' },
-                   { value: String(countdown.seconds).padStart(2, '0'), label: 'SECONDS' },
-                 ].map((item) => (
-                   <div key={item.label} className="flex flex-col items-center">
-                     <div
-                       className="w-[72px] h-[72px] rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10"
-                       style={{ background: 'rgba(255,255,255,0.08)' }}
-                     >
-                       <span className="text-2xl font-bold text-white">{item.value}</span>
-                     </div>
-                     <span className="text-[10px] font-semibold text-white/50 mt-2 tracking-wider uppercase">
-                       {item.label}
-                     </span>
-                   </div>
-                 ))}
-               </div>
+               {/* Countdown timer */}
+                <div className="flex gap-2 sm:gap-3 mb-8">
+                  {[
+                    { value: String(countdown.hours).padStart(2, '0'), label: 'HOURS' },
+                    { value: String(countdown.minutes).padStart(2, '0'), label: 'MINUTES' },
+                    { value: String(countdown.seconds).padStart(2, '0'), label: 'SECONDS' },
+                  ].map((item) => (
+                    <div key={item.label} className="flex flex-col items-center">
+                      <div
+                        className="w-[52px] h-[52px] sm:w-[72px] sm:h-[72px] rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10"
+                        style={{ background: 'rgba(255,255,255,0.08)' }}
+                      >
+                        <span className="text-xl sm:text-2xl font-bold text-white">{item.value}</span>
+                      </div>
+                      <span className="text-[9px] sm:text-[10px] font-semibold text-white/50 mt-1.5 sm:mt-2 tracking-wider uppercase">
+                        {item.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
 
               <Link
                 to="/shop"

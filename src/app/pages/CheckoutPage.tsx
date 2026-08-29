@@ -266,21 +266,22 @@ export default function CheckoutPage() {
 
       {/* Stepper */}
       <div className="bg-white border-b border-[#e5e7eb]">
-        <div className="max-w-[672px] mx-auto px-4 py-6">
+        <div className="max-w-[672px] mx-auto px-3 py-4 sm:py-6">
           <div className="flex items-center justify-center">
             {steps.map((s, i) => {
               const status = getStepStatus(s.num);
               return (
                 <div key={s.num} className="flex items-center">
                   <div className="flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                    <div className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold ${
                       status === 'completed' ? 'bg-green-500 text-white' :
                       status === 'active' ? 'bg-[#0057c2] text-white' :
                       'bg-[#e5e7eb] text-[#76777d]'
                     }`}>
-                      {status === 'completed' ? <Check size={18} /> : s.num}
+                      {status === 'completed' ? <Check size={14} className="sm:hidden" /> : <Check size={18} className="hidden sm:block" />}
+                      {status !== 'completed' && s.num}
                     </div>
-                    <span className={`text-xs mt-1.5 font-medium tracking-wide ${
+                    <span className={`text-[10px] sm:text-xs mt-1 sm:mt-1.5 font-medium tracking-wide ${
                       status === 'active' ? 'text-[#0057c2]' :
                       status === 'completed' ? 'text-green-600' :
                       'text-[#76777d]'
@@ -289,7 +290,7 @@ export default function CheckoutPage() {
                     </span>
                   </div>
                   {i < 3 && (
-                    <div className={`w-16 md:w-24 h-0.5 mx-2 ${
+                    <div className={`w-6 sm:w-16 md:w-24 h-0.5 mx-1 sm:mx-2 ${
                       status === 'completed' || (status === 'active' && i > 0) ? 'bg-[#0057c2]' : 'bg-[#e5e7eb]'
                     }`} />
                   )}

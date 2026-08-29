@@ -204,7 +204,7 @@ export default function ShopPage() {
       </div>
 
       {/* Search Bar */}
-      <div className="max-w-[1440px] mx-auto px-16 py-6">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 py-6">
         <div className="relative max-w-2xl">
           <Search
             size={20}
@@ -237,7 +237,7 @@ export default function ShopPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-[1440px] mx-auto px-16 pb-16">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pb-16">
         <div className="flex gap-8">
           {/* Left Sidebar - 3/12 width */}
           <aside

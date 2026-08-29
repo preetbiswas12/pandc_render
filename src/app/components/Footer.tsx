@@ -58,18 +58,22 @@ export function Footer() {
         </div>
 
         {/* Social Links */}
-        <div className="flex gap-6 mb-12">
-          <a href="#facebook" className="p-3 rounded-lg bg-white/10 hover:bg-[#0057c2] transition-colors">
-            <Facebook size={24} />
+        <div className="flex gap-3 sm:gap-6 mb-12">
+          <a href="#facebook" className="p-2 sm:p-3 rounded-lg bg-white/10 hover:bg-[#0057c2] transition-colors">
+            <Facebook size={18} className="sm:hidden" />
+            <Facebook size={24} className="hidden sm:block" />
           </a>
-          <a href="#instagram" className="p-3 rounded-lg bg-white/10 hover:bg-[#0057c2] transition-colors">
-            <Instagram size={24} />
+          <a href="#instagram" className="p-2 sm:p-3 rounded-lg bg-white/10 hover:bg-[#0057c2] transition-colors">
+            <Instagram size={18} className="sm:hidden" />
+            <Instagram size={24} className="hidden sm:block" />
           </a>
-          <a href="#twitter" className="p-3 rounded-lg bg-white/10 hover:bg-[#0057c2] transition-colors">
-            <Twitter size={24} />
+          <a href="#twitter" className="p-2 sm:p-3 rounded-lg bg-white/10 hover:bg-[#0057c2] transition-colors">
+            <Twitter size={18} className="sm:hidden" />
+            <Twitter size={24} className="hidden sm:block" />
           </a>
-          <a href="#youtube" className="p-3 rounded-lg bg-white/10 hover:bg-[#0057c2] transition-colors">
-            <Youtube size={24} />
+          <a href="#youtube" className="p-2 sm:p-3 rounded-lg bg-white/10 hover:bg-[#0057c2] transition-colors">
+            <Youtube size={18} className="sm:hidden" />
+            <Youtube size={24} className="hidden sm:block" />
           </a>
         </div>
       </div>
