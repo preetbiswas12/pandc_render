@@ -1,0 +1,96 @@
+[{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d687"
+  },
+  "type": "hero-side",
+  "title": "Dyeable Collections",
+  "image": "https://drive.google.com/file/d/10AUWAwXYQ_TYxl-lpIcWKBdkJH-LIdJg/view?usp=sharing",
+  "link": "/shop",
+  "buttonText": "Explore",
+  "isActive": true,
+  "order": 3,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.717Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-24T06:22:45.162Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d689"
+  },
+  "type": "casual-inspiration",
+  "title": "Hand Block Print",
+  "image": "https://drive.google.com/file/d/101nI_hOd2E7F-YhTvri-N8yVcHlBtKZa/view?usp=sharing",
+  "link": "/shop",
+  "buttonText": "Shop Now",
+  "isActive": true,
+  "order": 5,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.717Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-24T06:00:00.333Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d685"
+  },
+  "type": "hero-main",
+  "title": "Premium Quality\nFabric Supplier",
+  "subtitle": "Finest selection of cotton, silk, Linen, Viscose & Printed Fabrics for fashionable and everyday garments",
+  "image": "https://drive.google.com/file/d/1-lzzTFi7tb-erIXW1DWkNRj61I7Mcq2C/view?usp=sharing",
+  "link": "/shop",
+  "buttonText": "EXPLORE FABRICS",
+  "isActive": true,
+  "order": 1,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.716Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-25T14:23:27.752Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d688"
+  },
+  "type": "casual-inspiration",
+  "title": "Dyeable Fabrics",
+  "image": "https://drive.google.com/file/d/1-tTb9fSoe-SBbNthoq-g4DebpboGe_be/view?usp=sharing",
+  "link": "/shop",
+  "buttonText": "Shop Now",
+  "isActive": true,
+  "order": 4,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.717Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-24T06:23:14.645Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d686"
+  },
+  "type": "hero-side",
+  "title": "Digital Print",
+  "image": "https://drive.google.com/file/d/106QJll-CTyPfybOjNEqVH-ex_vji208H/view?usp=sharing",
+  "link": "/shop",
+  "buttonText": "Shop Now",
+  "isActive": true,
+  "order": 2,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.716Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-24T06:20:35.779Z"
+  }
+}]

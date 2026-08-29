@@ -1,0 +1,10 @@
+{
+  "description": "Converts design files into clean, responsive code, streamlining development for designers and developers to build websites efficiently.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

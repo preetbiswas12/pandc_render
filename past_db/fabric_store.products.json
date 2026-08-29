@@ -1,0 +1,319 @@
+[{
+  "_id": {
+    "$oid": "6a2707f8a7e962bf274fcf06"
+  },
+  "sku": "PCTF/VT/001",
+  "name": "Dyeable Gold Plain Viscose Tissue Fabric",
+  "price": 490,
+  "offerPercentage": 40,
+  "quantity": 150,
+  "category": "6a129773bd7b5471a524531e",
+  "subCategory": "",
+  "fabricType": "Viscose Gold Tissue Fabric",
+  "width": 44,
+  "unit": "meters",
+  "careInstructions": "Gentle Hand Wash in Cold Water, Dry Clean for long use recommended, Viscose owing to its inherent features may shrink upto 4-6% upon dyeing.",
+  "description": "Slight difference in color might be possible from visible product image due to photography",
+  "images": [
+    "https://drive.google.com/file/d/1K_ZeYlbA1tX79khFS7246iXdsMmSoTbI/view?usp=sharing",
+    "https://drive.google.com/file/d/1wXPq4qcBWuWPHc_1XPk5Lbu5puCGeHK5/view?usp=sharing"
+  ],
+  "colors": [
+    "Gold"
+  ],
+  "features": [
+    "Viscose Tissue Fabric"
+  ],
+  "createdAt": {
+    "$date": "2026-06-08T18:20:37.335Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-28T05:39:30.477Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a311a30a7e962bf274fd2c5"
+  },
+  "sku": "PCTF/VT/002",
+  "name": "Light Copper Dyed Plain Viscose Tissue Fabric",
+  "price": 490,
+  "offerPercentage": 40,
+  "quantity": 100,
+  "category": "6a129773bd7b5471a524531e",
+  "subCategory": "",
+  "fabricType": "Viscose Tissue Fabriv",
+  "width": 44,
+  "unit": "meters",
+  "careInstructions": "Gentle Hand Wash in Cold Water, Dry Clean for long use recommended, Viscose owing to its inherent features may shrink upto 4-6% upon dyeing.",
+  "description": "Slight difference in color might be possible from visible product image due to photography",
+  "images": [
+    "https://drive.google.com/file/d/1iMJZ9pRuox0kAVWFMRO8Q-wI2FFIdXMV/view?usp=sharing",
+    "https://drive.google.com/file/d/1xnGlrHviZMk1m-Bfw8RcoCOaU5nOGCdn/view?usp=sharing"
+  ],
+  "colors": [
+    "Color Peach"
+  ],
+  "features": [
+    "Viscose Tissue Fabric"
+  ],
+  "createdAt": {
+    "$date": "2026-06-16T09:25:37.140Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-28T05:39:12.039Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a311d51a7e962bf274fd2cb"
+  },
+  "sku": "PCTF/CS/001",
+  "name": "White Color Cotton Satin Dyeable Fabric",
+  "price": 200,
+  "offerPercentage": 40,
+  "quantity": 240,
+  "category": "69caa9c319e2b09f0ba5d676",
+  "subCategory": "plain-cotton",
+  "fabricType": "Cotton Satin RFD",
+  "width": 44,
+  "unit": "meters",
+  "careInstructions": "Gentle Hand Wash in Cold Water, Dry Clean for long use recommended, Cotton owing to its inherent features may shrink upto 1-5% upon dyeing.",
+  "description": "Cotton Satin RFD' Slight difference in color might be possible from visible product image due to photography",
+  "images": [
+    "https://drive.google.com/file/d/1lNl2q4dc9Iizka5gmLhB2d_3Iv00bIL-/view?usp=sharing",
+    "https://drive.google.com/file/d/15SX_Y2IXXIu-HjiUwkEcKiCRz_MeMABa/view?usp=sharing"
+  ],
+  "colors": [
+    "Color White"
+  ],
+  "features": [
+    "Cotton Satin Fabric"
+  ],
+  "createdAt": {
+    "$date": "2026-06-16T09:38:57.994Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-16T09:54:50.985Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a312120a7e962bf274fd343"
+  },
+  "sku": "PCTF/CC/022",
+  "name": "White Color Cotton Cambric Dyeable Fabric",
+  "price": 180,
+  "offerPercentage": 40,
+  "quantity": 500,
+  "category": "69caa9c319e2b09f0ba5d676",
+  "subCategory": "plain-cotton",
+  "fabricType": "Cotton Cambric",
+  "width": 44,
+  "unit": "meters",
+  "careInstructions": "Gentle Hand Wash in Cold Water, Dry Clean for long use recommended, Cotton owing to its inherent features may shrink upto 1-5% upon dyeing.",
+  "description": "Cotton Cambric RFD . Slight difference in color might be possible from visible product image due to photography",
+  "images": [
+    "https://drive.google.com/file/d/1SXJgSHMwN0EA8hegd_uz9AvumX4srYME/view?usp=sharing",
+    "https://drive.google.com/file/d/1L6E3nRBSIRi5-1mRzyofkKCDuN5aoPu4/view?usp=sharing"
+  ],
+  "colors": [
+    "Color White"
+  ],
+  "features": [
+    "Cotton Cambric"
+  ],
+  "createdAt": {
+    "$date": "2026-06-16T09:55:12.183Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-16T09:55:12.183Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a3123aaa7e962bf274fd36e"
+  },
+  "sku": "PCTF/ST/020",
+  "name": "Gold Plain Viscose Satin Tissue Dyeable Fabric",
+  "price": 500,
+  "offerPercentage": 40,
+  "quantity": 120,
+  "category": "6a129773bd7b5471a524531e",
+  "subCategory": "",
+  "fabricType": "Viscose Satin Tissue Fabric",
+  "width": 44,
+  "unit": "meters",
+  "careInstructions": "Gentle Hand Wash in Cold Water, Dry Clean for long use recommended, Viscose owing to its inherent features may shrink upto 4-6% upon dyeing.",
+  "description": "Dyeable Satin Tissue Gold. Slight difference in color might be possible from visible product image due to photography",
+  "images": [
+    "https://drive.google.com/file/d/1iH9OCYUmutiPIiQoYCpNpZ7lF1-NHcF1/view?usp=sharing",
+    "https://drive.google.com/file/d/1IsBVsAn-IYKP3WGG96K5jzJ1e0OqEkyY/view?usp=sharing"
+  ],
+  "colors": [
+    "Color Golden"
+  ],
+  "features": [
+    "Gold Plain Viscose Satin Tissue Dyeable Fabric"
+  ],
+  "createdAt": {
+    "$date": "2026-06-16T10:06:02.446Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-16T10:06:02.446Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a312f1ba7e962bf274fd374"
+  },
+  "sku": "PCTF/VG/015",
+  "name": "White Dyeable Heavy Plain Viscose Georgette Fabric",
+  "price": 385,
+  "offerPercentage": 60,
+  "quantity": 300,
+  "category": "6a129773bd7b5471a524531e",
+  "subCategory": "",
+  "fabricType": "Plain Viscose Georgette Fabric",
+  "width": 44,
+  "unit": "meters",
+  "careInstructions": "Gentle Hand Wash in Cold Water, Dry Clean for long use recommended, Viscose owing to its inherent features may shrink upto 4-6% upon dyeing.",
+  "description": "Viscose Heavy Georgette RFD. Slight difference in color might be possible from visible product image due to photography",
+  "images": [
+    "https://drive.google.com/file/d/17JWLZJYMITfxNxsiRAZPFttgU5tbu50j/view?usp=sharing",
+    "https://drive.google.com/file/d/13AlvNkdKl500GU9UQcmbl2GMjaWGYMwc/view?usp=sharing"
+  ],
+  "colors": [
+    "Color White"
+  ],
+  "features": [
+    "Dyeable Viscose Heavy Georgette"
+  ],
+  "createdAt": {
+    "$date": "2026-06-16T10:54:52.382Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-16T11:12:12.942Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8c6a1791daaadc1c086455"
+  },
+  "sku": "RJS10001/1",
+  "name": "Premium Lightweight Woven Silk Saree",
+  "price": 1649,
+  "offerPercentage": 0,
+  "quantity": 5,
+  "category": "69caa9c319e2b09f0ba5d67a",
+  "subCategory": "silk-blends",
+  "fabricType": "",
+  "sareeType": "Silk",
+  "width": 0,
+  "unit": "pieces",
+  "careInstructions": "Dry Wash Only",
+  "description": "Lightweight, comfortable, shining premium quality, Silk Woven Saree",
+  "images": [
+    "https://drive.google.com/file/d/18XZKVXstV8BGQWzGC53fCigwT_rpfoGd/view?usp=drivesdk",
+    "https://drive.google.com/file/d/1Sy2nBpmKFsWRSDXI9H-YtZk2Kc75z_UG/view?usp=drivesdk",
+    "https://drive.google.com/file/d/1VQjJtkOxb88bn-dwrPF_pqeAAhRf6dhy/view?usp=drivesdk"
+  ],
+  "colors": [
+    "Blue"
+  ],
+  "features": [
+    "Silk Blend",
+    "lightweight Comfortable."
+  ],
+  "createdAt": {
+    "$date": "2026-08-24T15:58:14.983Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-24T15:58:14.983Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8c6c4f91daaadc1c08647d"
+  },
+  "sku": "RJS10001/2",
+  "name": "Premium Lightweight Woven Silk Saree",
+  "price": 1649,
+  "offerPercentage": 0,
+  "quantity": 5,
+  "category": "69caa9c319e2b09f0ba5d67a",
+  "subCategory": "silk-blends",
+  "fabricType": "",
+  "sareeType": "Silk Saree",
+  "width": 0,
+  "unit": "pieces",
+  "careInstructions": "Dry Clean Only",
+  "description": "Lightweight, comfortable, shining premium quality woven Saree , natural shining, fashionable .",
+  "images": [
+    "https://drive.google.com/file/d/1UJSi2YLCWlVOshmrr7ucOm1PRfDRJXml/view?usp=drivesdk",
+    "https://drive.google.com/file/d/1SqFdFziD-RwXmpPeAsysh97EcuPjDm2e/view?usp=drivesdk",
+    "https://drive.google.com/file/d/1RB9W92lfxfxPA2hygaKYb4pJ3sshVaCU/view?usp=drivesdk"
+  ],
+  "colors": [
+    "Mustard Color"
+  ],
+  "features": [
+    "Lightweight",
+    "comfortable",
+    "shining premium quality woven Saree",
+    "natural shining"
+  ],
+  "createdAt": {
+    "$date": "2026-08-24T16:07:42.220Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-24T16:07:42.220Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8d250591daaadc1c086778"
+  },
+  "sku": "CK20001/1",
+  "name": "Premium Quality Blue Kantha Embroidered Chanderi Saree",
+  "price": 1299,
+  "offerPercentage": 0,
+  "quantity": 10,
+  "category": "69caa9c319e2b09f0ba5d67a",
+  "subCategory": "silk-blends",
+  "fabricType": "",
+  "sareeType": "Silk Cotton",
+  "width": 0,
+  "unit": "pieces",
+  "careInstructions": "Dry Clean Only",
+  "description": "PREMIUM CHANDERI SAREE\n KATHA HAND EMBROIDERY WORK\nWORK ON SLEEVES\nRUNNING BLOUSE ",
+  "images": [
+    "https://drive.google.com/file/d/17mUFRdMHgwjy3FcqqoTz2pGEccQGNfLN/view?usp=drivesdk",
+    "https://drive.google.com/file/d/1vdmR6eDRlk-MXD0nQ1wSdpCOQN7gHngw/view?usp=drivesdk",
+    "https://drive.google.com/file/d/17KCAp76nFOTCt-vAUmrxEb753YhQrNlh/view?usp=drivesdk"
+  ],
+  "colors": [
+    "Blue Colour"
+  ],
+  "features": [
+    "Silk-Cotton",
+    "lightweight",
+    "fashionable",
+    "festive vibes"
+  ],
+  "createdAt": {
+    "$date": "2026-08-25T05:15:49.316Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-25T05:15:49.316Z"
+  },
+  "__v": 0
+}]

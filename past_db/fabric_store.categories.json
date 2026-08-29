@@ -1,0 +1,192 @@
+[{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d67e"
+  },
+  "name": "Linen",
+  "slug": "linen",
+  "subCategories": [
+    {
+      "name": "Pure Linen",
+      "slug": "pure-linen",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d67f"
+      }
+    },
+    {
+      "name": "Linen Blends",
+      "slug": "linen-blends",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d680"
+      }
+    }
+  ],
+  "isActive": true,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.599Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T16:50:11.599Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d676"
+  },
+  "name": "Cotton",
+  "slug": "cotton",
+  "subCategories": [
+    {
+      "name": "Plain Cotton",
+      "slug": "plain-cotton",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d677"
+      }
+    },
+    {
+      "name": "Printed Cotton",
+      "slug": "printed-cotton",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d678"
+      }
+    },
+    {
+      "name": "Organic Cotton",
+      "slug": "organic-cotton",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d679"
+      }
+    }
+  ],
+  "isActive": true,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.595Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T16:50:11.595Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d681"
+  },
+  "name": "Wool",
+  "slug": "wool",
+  "subCategories": [
+    {
+      "name": "Merino Wool",
+      "slug": "merino-wool",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d682"
+      }
+    },
+    {
+      "name": "Cashmere Blends",
+      "slug": "cashmere-blends",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d683"
+      }
+    }
+  ],
+  "isActive": true,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.600Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T16:50:11.600Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69caa9c319e2b09f0ba5d67a"
+  },
+  "name": "Silk",
+  "slug": "silk",
+  "subCategories": [
+    {
+      "name": "Pure Silk",
+      "slug": "pure-silk",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d67b"
+      }
+    },
+    {
+      "name": "Silk Blends",
+      "slug": "silk-blends",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d67c"
+      }
+    },
+    {
+      "name": "Digital Print Silk",
+      "slug": "digital-print-silk",
+      "_id": {
+        "$oid": "69caa9c319e2b09f0ba5d67d"
+      }
+    }
+  ],
+  "isActive": true,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-03-30T16:50:11.599Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T16:50:11.599Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a129686bd7b5471a52452b0"
+  },
+  "name": "Print",
+  "slug": "print",
+  "subCategories": [
+    {
+      "name": "Hand Block Print",
+      "slug": "hand-block-print",
+      "_id": {
+        "$oid": "6a129686bd7b5471a52452b1"
+      }
+    },
+    {
+      "name": "Screen Print",
+      "slug": "screen-print",
+      "_id": {
+        "$oid": "6a129686bd7b5471a52452b2"
+      }
+    },
+    {
+      "name": "Digital Print",
+      "slug": "digital-print",
+      "_id": {
+        "$oid": "6a129686bd7b5471a52452b3"
+      }
+    }
+  ],
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-05-24T06:11:17.949Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-24T06:11:17.949Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a129773bd7b5471a524531e"
+  },
+  "name": "Viscose",
+  "slug": "viscose",
+  "subCategories": [],
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-05-24T06:15:14.100Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T08:19:22.827Z"
+  },
+  "__v": 0
+}]
