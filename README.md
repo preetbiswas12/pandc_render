@@ -56,17 +56,22 @@ VITE_FREE_SHIPPING_THRESHOLD=1999
 | `npm run preview` | Preview production build locally |
 | `npm run lint` | Run ESLint |
 
-## Deploying to Render
+## Deploying to Vercel
 
-This is a static site. Deploy as a **Static Site** on Render:
+1. Import the repo in Vercel
+2. Set the **Framework Preset** to `Vite`
+3. Set **Build Command** to `npm install && npm run build`
+4. Set **Output Directory** to `dist`
+5. Add environment variables in Vercel dashboard:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_RAZORPAY_KEY_ID`
+   - `VITE_CURRENCY_SYMBOL`
+   - `VITE_CURRENCY_CODE`
+   - `VITE_STANDARD_SHIPPING_COST`
+   - `VITE_FREE_SHIPPING_THRESHOLD`
 
-- **Build command**: `npm install && npm run build`
-- **Publish directory**: `dist`
-- **Node version**: 22.x (or latest)
-
-No start command needed — Render serves the static files from `dist` directly.
-
-Make sure all environment variables (Supabase, Razorpay) are set in Render's dashboard under Environment Variables.
+The `vercel.json` in the root handles SPA routing (all routes rewrite to `index.html`).
 
 ## Project Structure
 
