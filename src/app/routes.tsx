@@ -71,27 +71,28 @@ export const router = createBrowserRouter([
           { path: "privacy", Component: PrivacyPage },
           { path: "sitemap", Component: SitemapPage },
           { path: "cookies", Component: CookieSettingsPage },
-          { path: "admin/login", Component: AdminLoginPage },
-          {
-            path: "admin",
-            Component: (props) => (
-              <ProtectedAdminRoute>
-                <AdminDashboard {...props} />
-              </ProtectedAdminRoute>
-            ),
-            children: [
-              { index: true, Component: AdminOrders },
-              { path: "orders", Component: AdminOrders },
-              { path: "products", Component: AdminProducts },
-              { path: "categories", Component: AdminCategories },
-              { path: "coupons", Component: AdminCoupons },
-              { path: "banners", Component: BannersPage },
-              { path: "guidelines", Component: AdminGuidelines }
-            ]
-          },
           { path: "*", Component: NotFoundPage },
         ]
-      }
+      },
+      // Admin routes — standalone, no Layout wrapper (no Navbar/Footer)
+      { path: "admin/login", Component: AdminLoginPage },
+      {
+        path: "admin",
+        Component: (props) => (
+          <ProtectedAdminRoute>
+            <AdminDashboard {...props} />
+          </ProtectedAdminRoute>
+        ),
+        children: [
+          { index: true, Component: AdminOrders },
+          { path: "orders", Component: AdminOrders },
+          { path: "products", Component: AdminProducts },
+          { path: "categories", Component: AdminCategories },
+          { path: "coupons", Component: AdminCoupons },
+          { path: "banners", Component: BannersPage },
+          { path: "guidelines", Component: AdminGuidelines }
+        ]
+      },
     ]
   }
 ]);

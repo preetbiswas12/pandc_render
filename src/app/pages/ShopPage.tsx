@@ -239,10 +239,8 @@ export default function ShopPage() {
       {/* Main Content */}
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pb-16">
         <div className="flex gap-8">
-          {/* Left Sidebar - 3/12 width */}
-          <aside
-            className={`w-full lg:w-[25%] shrink-0 ${showMobileFilters ? 'block' : 'hidden'} lg:block`}
-          >
+          {/* Left Sidebar - inline on desktop */}
+          <aside className="hidden lg:block lg:w-[25%] lg:shrink-0">
             <div className="sticky top-6 space-y-6">
               {/* Clear Filters */}
               {hasActiveFilters && (
@@ -408,7 +406,127 @@ export default function ShopPage() {
             </div>
           </aside>
 
-          {/* Product Grid - 9/12 width */}
+          {/* Mobile Filter Drawer */}
+          {showMobileFilters && (
+            <>
+              <div
+                className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+                onClick={() => setShowMobileFilters(false)}
+              />
+              <div className="fixed inset-y-0 left-0 z-50 w-[280px] bg-white shadow-xl lg:hidden overflow-y-auto">
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold" style={{ fontFamily: 'Inter, sans-serif' }}>Filters</h3>
+                    <button
+                      onClick={() => setShowMobileFilters(false)}
+                      className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      <X size={20} style={{ color: DESIGN.muted }} />
+                    </button>
+                  </div>
+                  <div className="space-y-6">
+                    {/* Clear Filters */}
+                    {hasActiveFilters && (
+                      <button
+                        onClick={handleClearFilters}
+                        className="w-full py-2.5 px-4 rounded-lg text-sm font-medium transition-colors"
+                        style={{
+                          backgroundColor: DESIGN.lightBg,
+                          color: DESIGN.text,
+                          border: `1px solid ${DESIGN.border}`,
+                          fontFamily: 'Inter, sans-serif',
+                        }}
+                      >
+                        Clear All Filters
+                      </button>
+                    )}
+
+                    {/* Categories */}
+                    <div
+                      className="rounded-xl border p-5"
+                      style={{ backgroundColor: DESIGN.white, borderColor: DESIGN.border }}
+                    >
+                      <h3
+                        className="text-sm font-semibold uppercase tracking-wider mb-4"
+                        style={{ color: DESIGN.secondary, fontFamily: 'Inter, sans-serif' }}
+                      >
+                        Categories
+                      </h3>
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => { setSelectedCategory(''); navigate('/shop'); setShowMobileFilters(false); }}
+                          className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-all"
+                          style={{
+                            backgroundColor: !selectedCategory ? DESIGN.text : DESIGN.lightBg,
+                            color: !selectedCategory ? DESIGN.white : DESIGN.text,
+                            fontFamily: 'Inter, sans-serif',
+                          }}
+                        >
+                          All Categories
+                        </button>
+                        {categories.map((cat) => (
+                          <button
+                            key={cat.id}
+                            onClick={() => { setSelectedCategory(cat.slug); navigate(`/shop/${cat.slug}`); setShowMobileFilters(false); }}
+                            className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-all"
+                            style={{
+                              backgroundColor: selectedCategory === cat.slug ? DESIGN.text : DESIGN.lightBg,
+                              color: selectedCategory === cat.slug ? DESIGN.white : DESIGN.text,
+                              fontFamily: 'Inter, sans-serif',
+                            }}
+                          >
+                            {cat.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Product Type */}
+                    <div
+                      className="rounded-xl border p-5"
+                      style={{ backgroundColor: DESIGN.white, borderColor: DESIGN.border }}
+                    >
+                      <h3
+                        className="text-sm font-semibold uppercase tracking-wider mb-4"
+                        style={{ color: DESIGN.secondary, fontFamily: 'Inter, sans-serif' }}
+                      >
+                        Product Type
+                      </h3>
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => { setSelectedProductType(''); setShowMobileFilters(false); }}
+                          className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-all"
+                          style={{
+                            backgroundColor: !selectedProductType ? DESIGN.text : DESIGN.lightBg,
+                            color: !selectedProductType ? DESIGN.white : DESIGN.text,
+                            fontFamily: 'Inter, sans-serif',
+                          }}
+                        >
+                          All Products
+                        </button>
+                        {PRODUCT_TYPES.map((type) => (
+                          <button
+                            key={type.value}
+                            onClick={() => { setSelectedProductType(type.value); setShowMobileFilters(false); }}
+                            className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-all"
+                            style={{
+                              backgroundColor: selectedProductType === type.value ? DESIGN.text : DESIGN.lightBg,
+                              color: selectedProductType === type.value ? DESIGN.white : DESIGN.text,
+                              fontFamily: 'Inter, sans-serif',
+                            }}
+                          >
+                            {type.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Product Grid - full width on mobile */}
           <main className="flex-1">
             {isLoading ? (
               /* Loading Skeleton */
