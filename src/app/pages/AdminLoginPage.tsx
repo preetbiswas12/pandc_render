@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useAdmin } from '../context/AdminContext';
 import { Eye, EyeOff, Lock, Mail, AlertCircle } from 'lucide-react';
@@ -17,6 +17,7 @@ export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [loginAttempts, setLoginAttempts] = useState(0);
+  const hasRedirected = useRef(false);
 
   // Animation on mount
   useEffect(() => {
@@ -32,9 +33,10 @@ export default function AdminLoginPage() {
     return () => ctx.revert();
   }, []);
 
-  // Check if already logged in
+  // Check if already logged in — guard against double-navigate on mobile
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !hasRedirected.current) {
+      hasRedirected.current = true;
       navigate('/admin');
     }
   }, [isAuthenticated, navigate]);

@@ -44,7 +44,7 @@ export const ProtectedAdminRoute = ({
   }
 
   if (!isAuthenticated || !isVerified) {
-    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+    return <Navigate to="/admin/login" state={{ from: location.pathname }} replace />;
   }
 
   // Check required permissions
