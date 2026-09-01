@@ -67,8 +67,7 @@ export default function AdminLoginPage() {
           {/* Clerk SignIn Component */}
           <div className="clerk-signin-container">
             <SignIn
-              routing="path"
-              path="/admin/login"
+              routing="virtual"
               signUpUrl={undefined}
               redirectUrl="/admin"
               appearance={{

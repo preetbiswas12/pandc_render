@@ -38,8 +38,7 @@ export default function SignUpPage() {
 
         <div className="flex justify-center">
           <SignUp
-            routing="path"
-            path="/sign-up"
+            routing="virtual"
             signInUrl="/sign-in"
             redirectUrl="/"
             appearance={{
