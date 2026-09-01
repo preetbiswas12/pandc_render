@@ -115,7 +115,7 @@ export default function AdminLoginPage() {
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-slate-700/50 text-center">
             <p className="text-slate-400 text-xs">
-              🔐 Secure Admin Area - Only {ADMIN_EMAIL} has access
+              🔐 Secure Admin Area
             </p>
           </div>
         </div>
