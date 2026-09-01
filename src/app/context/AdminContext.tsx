@@ -13,6 +13,7 @@ interface AdminUser {
 interface AdminContextType {
   admin: AdminUser | null;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -21,7 +22,12 @@ interface AdminContextType {
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
-const ADMIN_EMAIL = config.admin.email;
+export const ADMIN_EMAIL = config.admin.email;
+
+export const isAdminEmail = (email: string | undefined | null): boolean => {
+  if (!email) return false;
+  return email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+};
 
 export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
@@ -37,10 +43,9 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     if (isSignedIn && user) {
       const primaryEmail = user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress;
 
-      // Only allow admin access for the configured admin email
-      if (primaryEmail?.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+      if (isAdminEmail(primaryEmail)) {
         const adminData: AdminUser = {
-          email: primaryEmail,
+          email: primaryEmail!,
           role: 'super_admin',
           permissions: ['products', 'orders', 'coupons', 'categories', 'banners', 'guidelines'],
           imageUrl: user.imageUrl,
@@ -48,7 +53,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         setAdmin(adminData);
         localStorage.setItem('adminUser', JSON.stringify(adminData));
       } else {
-        // Not an admin email - sign out and clear
         setAdmin(null);
         localStorage.removeItem('adminUser');
       }
@@ -61,8 +65,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
   }, [isSignedIn, user, isUserLoaded]);
 
   const login = async (_email: string, _password: string) => {
-    // Login is now handled by Clerk's SignIn component
-    // This method is kept for compatibility but redirects to Clerk login
     navigate('/admin/login');
   };
 
@@ -77,9 +79,13 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     return !!admin && isSignedIn === true;
   };
 
+  const primaryEmail = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses[0]?.emailAddress;
+  const adminCheck = isAdminEmail(primaryEmail);
+
   const value: AdminContextType = {
     admin,
     isAuthenticated: !!admin && isSignedIn === true,
+    isAdmin: adminCheck,
     isLoading: isLoading || !isUserLoaded,
     login,
     logout,

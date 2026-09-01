@@ -1,15 +1,20 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { SignIn } from '@clerk/clerk-react';
-import { useAdmin } from '../context/AdminContext';
+import { SignIn, useUser, useAuth } from '@clerk/clerk-react';
+import { useAdmin, ADMIN_EMAIL, isAdminEmail } from '../context/AdminContext';
 import { gsap } from 'gsap';
-import { Lock } from 'lucide-react';
+import { Lock, ShieldAlert } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
   const { isAuthenticated, isLoading } = useAdmin();
+  const { user, isLoaded: isUserLoaded } = useUser();
+  const { signOut } = useAuth();
   const pageRef = useRef<HTMLDivElement>(null);
   const hasRedirected = useRef(false);
+
+  const primaryEmail = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses[0]?.emailAddress;
+  const isWrongAccount = isUserLoaded && user && !isAdminEmail(primaryEmail);
 
   // Animation on mount
   useEffect(() => {
@@ -33,7 +38,12 @@ export default function AdminLoginPage() {
     }
   }, [isAuthenticated, isLoading, navigate]);
 
-  if (isLoading) {
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.reload();
+  };
+
+  if (isLoading || !isUserLoaded) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
         <div className="text-center">
@@ -64,6 +74,28 @@ export default function AdminLoginPage() {
             <p className="text-slate-400 text-sm">Secure authentication with Clerk</p>
           </div>
 
+          {/* Show signed in as wrong account message */}
+          {isWrongAccount && (
+            <div className="mb-6 p-4 rounded-xl bg-amber-500/15 border border-amber-500/30">
+              <div className="flex items-start gap-3">
+                <ShieldAlert size={20} className="text-amber-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-amber-300 text-sm font-semibold">Wrong account</p>
+                  <p className="text-amber-400/80 text-xs mt-1">
+                    Signed in as <span className="font-medium">{primaryEmail}</span>. 
+                    Sign out and use <span className="font-medium">{ADMIN_EMAIL}</span> to access admin.
+                  </p>
+                  <button
+                    onClick={handleSignOut}
+                    className="mt-3 px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-medium rounded-lg transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Clerk SignIn Component */}
           <div className="clerk-signin-container">
             <SignIn
@@ -83,7 +115,7 @@ export default function AdminLoginPage() {
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-slate-700/50 text-center">
             <p className="text-slate-400 text-xs">
-              🔐 Secure Admin Area - Unauthorized access is prohibited
+              🔐 Secure Admin Area - Only {ADMIN_EMAIL} has access
             </p>
           </div>
         </div>

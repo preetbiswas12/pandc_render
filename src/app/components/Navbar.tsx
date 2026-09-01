@@ -5,6 +5,7 @@ import { Menu, X, Home, ShoppingBag, Heart, User, ShoppingCart, LogOut, Package 
 import { useApp } from '../context/AppContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { useUser, useAuth, UserButton } from '@clerk/clerk-react';
+import { isAdminEmail, ADMIN_EMAIL } from '../context/AdminContext';
 
 interface NavbarProps {
   cartCount?: number;
@@ -18,6 +19,8 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
   const { isSignedIn, user } = useUser();
   const { signOut } = useAuth();
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const primaryEmail = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses[0]?.emailAddress;
+  const isAdmin = isAdminEmail(primaryEmail);
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.cartQuantity, 0);
 
@@ -82,6 +85,11 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
             <Link to="/contact" className="text-sm font-medium text-gray-600 hover:text-[#030213] transition-colors">
               Contact
             </Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-sm font-medium text-[#d946ef] hover:text-[#c026d3] transition-colors font-semibold">
+                Admin
+              </Link>
+            )}
           </div>
 
           {/* Right side icons */}
@@ -182,6 +190,11 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
               <Link to="/contact" className="block text-sm font-medium text-gray-600 hover:text-[#030213]" onClick={() => setIsMenuOpen(false)}>
                 Contact
               </Link>
+              {isAdmin && (
+                <Link to="/admin" className="block text-sm font-medium text-[#d946ef] hover:text-[#c026d3] font-semibold" onClick={() => setIsMenuOpen(false)}>
+                  Admin
+                </Link>
+              )}
               {isLoggedIn ? (
                 <>
                   <Link to="/orders" className="block text-sm font-medium text-gray-600 hover:text-[#030213]" onClick={() => setIsMenuOpen(false)}>
