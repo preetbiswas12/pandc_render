@@ -2,6 +2,7 @@ import { supabase } from './database-supabase';
 
 export interface RatingData {
   id?: string;
+  _id?: string;
   productId: string;
   userId: string;
   userName: string;
@@ -46,7 +47,20 @@ export const getProductRatings = async (productId: string) => {
 
     if (error) throw error;
 
-    const ratings = data || [];
+    const ratings = (data || []).map((r: Record<string, any>) => ({
+      ...r,
+      id: r.id || r._id,
+      _id: r.id || r._id,
+      productId: r.product_id,
+      userId: r.user_id,
+      userName: r.user_name,
+      userEmail: r.user_email,
+      userPfp: r.user_pfp || generateAvatar(r.user_name || r.user_email || 'Anonymous'),
+      helpful: r.helpful,
+      unhelpful: r.unhelpful,
+      createdAt: r.created_at,
+      updatedAt: r.updated_at,
+    }));
     const statistics = computeRatingStatistics(ratings);
 
     return { success: true, data: { ratings, statistics } };
@@ -55,6 +69,11 @@ export const getProductRatings = async (productId: string) => {
     return { success: false, message: 'Failed to fetch ratings' };
   }
 };
+
+// Generate avatar URL for users without a profile picture
+function generateAvatar(name: string): string {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0057c2&color=fff&size=128`;
+}
 
 function computeRatingStatistics(ratings: RatingData[]): RatingStatistics {
   const totalRatings = ratings.length;
@@ -90,7 +109,23 @@ export const getUserRating = async (productId: string, userId: string) => {
       .single();
 
     if (error) return { success: false, message: 'No rating found' };
-    return { success: true, data };
+    
+    const ratingData: RatingData = {
+      ...data,
+      id: data.id || data._id,
+      _id: data.id || data._id,
+      productId: data.product_id,
+      userId: data.user_id,
+      userName: data.user_name,
+      userEmail: data.user_email,
+      userPfp: data.user_pfp || generateAvatar(data.user_name || data.user_email || 'Anonymous'),
+      helpful: data.helpful,
+      unhelpful: data.unhelpful,
+      createdAt: data.created_at,
+      updatedAt: data.updated_at,
+    };
+    
+    return { success: true, data: ratingData };
   } catch (error) {
     console.error('Error fetching user rating:', error);
     return { success: false, message: 'Failed to fetch rating' };
