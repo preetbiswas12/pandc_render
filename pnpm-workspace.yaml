@@ -1,5 +1,6 @@
 packages:
   - '.'
 allowBuilds:
+  '@clerk/shared': false
   '@tailwindcss/oxide': false
   esbuild: false

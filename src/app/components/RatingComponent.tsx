@@ -17,6 +17,7 @@ interface RatingComponentProps {
   userId?: string;
   userName?: string;
   userEmail?: string;
+  userPfp?: string;
 }
 
 export default function RatingComponent({
@@ -25,11 +26,14 @@ export default function RatingComponent({
   userId: userIdProp,
   userName: userNameProp,
   userEmail: userEmailProp,
+  userPfp: userPfpProp,
 }: RatingComponentProps) {
   const storedEmail = typeof window !== 'undefined' ? localStorage.getItem('userEmail') : null;
+  const storedPfp = typeof window !== 'undefined' ? localStorage.getItem('userPfp') : null;
   const userId = userIdProp || (storedEmail ? `user_${storedEmail.toLowerCase()}` : undefined);
   const userName = userNameProp || (storedEmail ? storedEmail.split('@')[0] : undefined);
   const userEmail = userEmailProp || storedEmail || undefined;
+  const userPfp = userPfpProp || storedPfp || undefined;
   const [ratings, setRatings] = useState<RatingData[]>([]);
   const [statistics, setStatistics] = useState<RatingStatistics | null>(null);
   const [userRating, setUserRating] = useState<RatingData | null>(null);
@@ -103,6 +107,7 @@ export default function RatingComponent({
         userId,
         userName,
         userEmail,
+        userPfp,
         rating: formData.rating,
         title: formData.title,
         comment: formData.comment,
@@ -252,6 +257,20 @@ export default function RatingComponent({
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    {userPfp ? (
+                      <img
+                        src={userPfp}
+                        alt={userName || 'You'}
+                        className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-[#0057c2] text-white flex items-center justify-center flex-shrink-0">
+                        <User size={16} />
+                      </div>
+                    )}
+                    <p className="text-sm font-semibold text-gray-800">{userName || userEmail || 'You'}</p>
+                  </div>
                   <div className="flex gap-2 items-center mb-2">
                     {renderStars(userRating.rating)}
                     <span className="text-sm font-medium text-gray-600 ml-2">
@@ -394,11 +413,19 @@ export default function RatingComponent({
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-[#0057c2] text-white flex items-center justify-center flex-shrink-0">
-                      <User size={14} />
-                    </div>
-                    <p className="text-sm font-medium text-gray-600">{rating.userName || rating.userEmail || 'Anonymous'}</p>
-                  </div>
+                     {rating.userPfp ? (
+                       <img
+                         src={rating.userPfp}
+                         alt={rating.userName || 'User'}
+                         className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                       />
+                     ) : (
+                       <div className="w-7 h-7 rounded-full bg-[#0057c2] text-white flex items-center justify-center flex-shrink-0">
+                         <User size={14} />
+                       </div>
+                     )}
+                     <p className="text-sm font-medium text-gray-600">{rating.userName || rating.userEmail || 'Anonymous'}</p>
+                   </div>
                 </div>
               </div>
 

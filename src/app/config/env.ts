@@ -86,7 +86,12 @@ export const config = {
 
   // Admin
   admin: {
-    email: import.meta.env.VITE_ADMIN_EMAIL || 'admin@pandctexfab.com',
+    email: import.meta.env.VITE_ADMIN_EMAIL || 'pandctexfab@gmail.com',
+  },
+
+  // Clerk
+  clerk: {
+    publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '',
   },
 
   // Development

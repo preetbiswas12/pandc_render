@@ -1,22 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
+import { SignIn } from '@clerk/clerk-react';
 import { useAdmin } from '../context/AdminContext';
-import { Eye, EyeOff, Lock, Mail, AlertCircle } from 'lucide-react';
 import { gsap } from 'gsap';
+import { Lock } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAdmin();
   const pageRef = useRef<HTMLDivElement>(null);
-  const { login, isAuthenticated } = useAdmin();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState('');
-  const [loginAttempts, setLoginAttempts] = useState(0);
   const hasRedirected = useRef(false);
 
   // Animation on mount
@@ -35,63 +27,24 @@ export default function AdminLoginPage() {
 
   // Check if already logged in — guard against double-navigate on mobile
   useEffect(() => {
-    if (isAuthenticated && !hasRedirected.current) {
+    if (isAuthenticated && !isLoading && !hasRedirected.current) {
       hasRedirected.current = true;
       navigate('/admin');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, isLoading, navigate]);
 
-  const validateForm = () => {
-    const newErrors: { email?: string; password?: string } = {};
-
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (errors[name as keyof typeof errors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
-    }
-    setLoginError('');
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setIsLoading(true);
-    setLoginError('');
-
-    try {
-      await login(formData.email, formData.password);
-    } catch (error) {
-      setLoginError(error instanceof Error ? error.message : 'Login failed. Please try again.');
-      setLoginAttempts((prev) => prev + 1);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-magenta-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-white mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={pageRef} className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
@@ -108,106 +61,46 @@ export default function AdminLoginPage() {
               <Lock size={32} className="text-white" />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Admin Panel</h1>
-            <p className="text-slate-400 text-sm">Secure authentication required</p>
+            <p className="text-slate-400 text-sm">Secure authentication with Clerk</p>
           </div>
 
-          {/* Error message */}
-          {loginError && (
-            <div className="mb-6 p-4 rounded-xl bg-red-500/15 border border-red-500/30 flex items-start gap-3 shadow-lg shadow-red-500/10">
-              <AlertCircle size={20} className="text-red-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-red-300 text-sm font-semibold">{loginError}</p>
-                {loginAttempts > 0 && (
-                  <p className="text-red-400 text-xs mt-1">
-                    Failed attempt: {loginAttempts}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-slate-200 mb-2">
-                Email Address
-              </label>
-              <div className="relative group">
-                <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-magenta-400 transition-colors" />
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  disabled={isLoading}
-                  placeholder="admin@example.com"
-                  className={`w-full pl-12 pr-4 py-3 rounded-xl bg-slate-700/40 border transition-all outline-none backdrop-blur-sm ${
-                    errors.email
-                      ? 'border-red-500/50 focus:border-red-400 focus:ring-2 focus:ring-red-500/20'
-                      : 'border-slate-600/50 focus:border-magenta-500 focus:ring-2 focus:ring-magenta-500/20'
-                  } text-white placeholder-slate-500 disabled:opacity-50`}
-                />
-              </div>
-              {errors.email && (
-                <p className="text-red-400 text-xs mt-2 font-medium">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Password field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-slate-200 mb-2">
-                Password
-              </label>
-              <div className="relative group">
-                <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-magenta-400 transition-colors" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  disabled={isLoading}
-                  placeholder="••••••••"
-                  className={`w-full pl-12 pr-12 py-3 rounded-xl bg-slate-700/40 border transition-all outline-none backdrop-blur-sm ${
-                    errors.password
-                      ? 'border-red-500/50 focus:border-red-400 focus:ring-2 focus:ring-red-500/20'
-                      : 'border-slate-600/50 focus:border-magenta-500 focus:ring-2 focus:ring-magenta-500/20'
-                  } text-white placeholder-slate-500 disabled:opacity-50`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-magenta-400 transition-colors"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="text-red-400 text-xs mt-2 font-medium">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Submit button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 px-4 bg-gradient-to-r from-magenta-600 to-pink-600 hover:from-magenta-500 hover:to-pink-500 text-white font-bold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-6 shadow-lg shadow-magenta-500/30 hover:shadow-xl hover:shadow-magenta-500/50 flex items-center justify-center gap-2"
-            >
-              {isLoading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Signing in...</span>
-                </>
-              ) : (
-                <>
-                  <Lock size={18} />
-                  <span>Sign In to Admin</span>
-                </>
-              )}
-            </button>
-          </form>
+          {/* Clerk SignIn Component */}
+          <div className="clerk-signin-container">
+            <SignIn
+              routing="path"
+              path="/admin/login"
+              signUpUrl={undefined}
+              redirectUrl="/admin"
+              appearance={{
+                elements: {
+                  rootBox: 'w-full',
+                  card: 'bg-transparent shadow-none border-0',
+                  headerTitle: 'hidden',
+                  headerSubtitle: 'hidden',
+                  socialButtonsBlockButton: 'bg-slate-700/50 border-slate-600 text-white hover:bg-slate-600/50',
+                  socialButtonsBlockButtonText: 'text-white',
+                  dividerText: 'text-slate-400',
+                  dividerLine: 'bg-slate-600',
+                  formFieldInput: 'bg-slate-700/40 border-slate-600 text-white placeholder-slate-500 focus:border-magenta-500 focus:ring-magenta-500/20',
+                  formFieldLabel: 'text-slate-200',
+                  formButtonPrimary: 'bg-gradient-to-r from-magenta-600 to-pink-600 hover:from-magenta-500 hover:to-pink-500 text-white',
+                  footerActionText: 'text-slate-400',
+                  footerActionLink: 'text-magenta-400 hover:text-magenta-300',
+                  formFieldWarningText: 'text-red-400',
+                  formFieldErrorText: 'text-red-400',
+                  identityPreviewText: 'text-slate-200',
+                  identityPreviewEditButton: 'text-magenta-400',
+                },
+                variables: {
+                  colorPrimary: '#d946ef',
+                  colorBackground: 'transparent',
+                  colorText: '#fff',
+                  colorInputBackground: 'rgba(51, 65, 85, 0.4)',
+                  colorInputText: '#fff',
+                },
+              }}
+            />
+          </div>
 
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-slate-700/50 text-center">

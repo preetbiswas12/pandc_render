@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router';
-import { supabase } from '../services/database-supabase';
-import bcrypt from 'bcryptjs';
+import { useUser, useAuth } from '@clerk/clerk-react';
+import { config } from '../config/env';
 
 interface AdminUser {
   email: string;
   role: string;
   permissions: string[];
+  imageUrl?: string;
 }
 
 interface AdminContextType {
@@ -20,77 +21,66 @@ interface AdminContextType {
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
+const ADMIN_EMAIL = config.admin.email;
+
 export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
+  const { user, isLoaded: isUserLoaded } = useUser();
+  const { isSignedIn, signOut } = useAuth();
   const [admin, setAdmin] = useState<AdminUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize from localStorage
+  // Sync Clerk user state with admin context
   useEffect(() => {
-    const savedUser = localStorage.getItem('adminUser');
-    if (savedUser) {
-      try {
-        setAdmin(JSON.parse(savedUser));
-      } catch (error) {
-        console.error('Failed to parse saved admin user:', error);
+    if (!isUserLoaded) return;
+
+    if (isSignedIn && user) {
+      const primaryEmail = user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress;
+
+      // Only allow admin access for the configured admin email
+      if (primaryEmail?.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+        const adminData: AdminUser = {
+          email: primaryEmail,
+          role: 'super_admin',
+          permissions: ['products', 'orders', 'coupons', 'categories', 'banners', 'guidelines'],
+          imageUrl: user.imageUrl,
+        };
+        setAdmin(adminData);
+        localStorage.setItem('adminUser', JSON.stringify(adminData));
+      } else {
+        // Not an admin email - sign out and clear
+        setAdmin(null);
         localStorage.removeItem('adminUser');
       }
+    } else {
+      setAdmin(null);
+      localStorage.removeItem('adminUser');
     }
+
     setIsLoading(false);
-  }, []);
+  }, [isSignedIn, user, isUserLoaded]);
 
-  const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      // Fetch admin from Supabase
-      const { data: admins, error } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('email', email)
-        .limit(1);
-
-      if (error || !admins || admins.length === 0) {
-        throw new Error('Invalid email or password');
-      }
-
-      const adminRecord = admins[0];
-      
-      // Verify password
-      const passwordMatch = await bcrypt.compare(password, adminRecord.password);
-      if (!passwordMatch) {
-        throw new Error('Invalid email or password');
-      }
-
-      const adminData: AdminUser = {
-        email: adminRecord.email,
-        role: adminRecord.role,
-        permissions: adminRecord.permissions || ['products', 'orders', 'coupons', 'categories', 'banners', 'guidelines'],
-      };
-      
-      setAdmin(adminData);
-      localStorage.setItem('adminUser', JSON.stringify(adminData));
-      navigate('/admin');
-    } catch (error) {
-      setIsLoading(false);
-      throw error;
-    }
+  const login = async (_email: string, _password: string) => {
+    // Login is now handled by Clerk's SignIn component
+    // This method is kept for compatibility but redirects to Clerk login
+    navigate('/admin/login');
   };
 
-  const logout = () => {
+  const logout = async () => {
     setAdmin(null);
     localStorage.removeItem('adminUser');
+    await signOut();
     navigate('/admin/login');
   };
 
   const verifyToken = async (): Promise<boolean> => {
-    // Simple token verification - check if admin session is still valid
-    return !!admin;
+    return !!admin && isSignedIn === true;
   };
 
   const value: AdminContextType = {
     admin,
-    isAuthenticated: !!admin,
-    isLoading,
+    isAuthenticated: !!admin && isSignedIn === true,
+    isLoading: isLoading || !isUserLoaded,
     login,
     logout,
     verifyToken,

@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from 'react-router';
 import { useAdmin } from '../context/AdminContext';
-import { useEffect, useState } from 'react';
 
 interface ProtectedAdminRouteProps {
   children: React.ReactNode;
@@ -11,26 +10,10 @@ export const ProtectedAdminRoute = ({
   children,
   requiredPermissions = [],
 }: ProtectedAdminRouteProps) => {
-  const { isAuthenticated, admin, isLoading, verifyToken } = useAdmin();
+  const { isAuthenticated, admin, isLoading } = useAdmin();
   const location = useLocation();
-  const [isVerified, setIsVerified] = useState(false);
-  const [verificationLoading, setVerificationLoading] = useState(true);
 
-  useEffect(() => {
-    const verify = async () => {
-      if (isAuthenticated) {
-        const verified = await verifyToken();
-        setIsVerified(verified);
-      } else {
-        setIsVerified(false);
-      }
-      setVerificationLoading(false);
-    };
-
-    verify();
-  }, [isAuthenticated]);
-
-  if (isLoading || verificationLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
         <div className="text-center">
@@ -43,7 +26,7 @@ export const ProtectedAdminRoute = ({
     );
   }
 
-  if (!isAuthenticated || !isVerified) {
+  if (!isAuthenticated) {
     return <Navigate to="/admin/login" state={{ from: location.pathname }} replace />;
   }
 

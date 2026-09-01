@@ -6,6 +6,7 @@ export interface RatingData {
   userId: string;
   userName: string;
   userEmail: string;
+  userPfp?: string;
   rating: number;
   title?: string;
   comment?: string;
@@ -107,6 +108,7 @@ export const createRating = async (ratingData: RatingData) => {
         user_id: ratingData.userId,
         user_name: ratingData.userName,
         user_email: ratingData.userEmail,
+        user_pfp: ratingData.userPfp || null,
         rating: ratingData.rating,
         title: ratingData.title,
         comment: ratingData.comment,

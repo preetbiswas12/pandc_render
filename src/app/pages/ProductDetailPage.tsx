@@ -635,6 +635,7 @@ export default function ProductDetailPage() {
             userId={localStorage.getItem('userId') || (localStorage.getItem('userEmail') ? `user_${localStorage.getItem('userEmail')!.toLowerCase()}` : undefined)}
             userName={localStorage.getItem('userName') || (localStorage.getItem('userEmail') ? localStorage.getItem('userEmail')!.split('@')[0] : undefined)}
             userEmail={localStorage.getItem('userEmail') || undefined}
+            userPfp={localStorage.getItem('userPfp') || undefined}
           />
         </div>
       </div>

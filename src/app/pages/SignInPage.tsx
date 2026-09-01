@@ -30,9 +30,11 @@ export default function SignInPage() {
 
     const userId = `user_${email.toLowerCase()}`;
     const userName = email.split('@')[0];
+    const userPfp = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=0057c2&color=fff&size=128`;
     localStorage.setItem('userId', userId);
     localStorage.setItem('userName', userName);
     localStorage.setItem('userEmail', email);
+    localStorage.setItem('userPfp', userPfp);
     navigate('/', { replace: true });
   };
 
