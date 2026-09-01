@@ -43,8 +43,6 @@ export const ProtectedAdminRoute = ({
           </p>
           <p className="text-gray-500 text-sm mb-8">
             Signed in as <span className="text-gray-300">{primaryEmail}</span>
-            <br />
-            Only <span className="text-blue-400">{ADMIN_EMAIL}</span> has admin access.
           </p>
           <a
             href="/"
