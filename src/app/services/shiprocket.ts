@@ -3,11 +3,60 @@
 
 import { config } from '../config/env';
 
+interface CartItem {
+  productType?: string;
+  unit?: string;
+  cartQuantity: number;
+  [key: string]: any;
+}
+
 /**
  * Validate pincode format (6 digits for India)
  */
 export const validatePincodeFormat = (pincode: string): boolean => {
   return /^\d{6}$/.test(pincode);
+};
+
+/**
+ * Calculate shipping charge based on cart items
+ * Fabric: 1-10 meters = ₹199, 11-30 meters = ₹299
+ * Saree/Handloom/Suit-set: 1-5 pieces = ₹199, 6-10 pieces = ₹299
+ * Mixed orders: charges add up
+ */
+export const calculateShippingFromCart = (cartItems: CartItem[]): number => {
+  let fabricMeters = 0;
+  let pieceItems = 0;
+
+  for (const item of cartItems) {
+    const isFabric = item.productType === 'fabric' || (!item.productType && item.unit !== 'pieces');
+    if (isFabric) {
+      fabricMeters += item.cartQuantity;
+    } else {
+      pieceItems += item.cartQuantity;
+    }
+  }
+
+  let shipping = 0;
+
+  // Fabric shipping calculation
+  if (fabricMeters > 0) {
+    if (fabricMeters <= 10) {
+      shipping += 199;
+    } else {
+      shipping += 299;
+    }
+  }
+
+  // Piece items shipping calculation
+  if (pieceItems > 0) {
+    if (pieceItems <= 5) {
+      shipping += 199;
+    } else {
+      shipping += 299;
+    }
+  }
+
+  return shipping;
 };
 
 /**
@@ -17,7 +66,8 @@ export const validatePincodeFormat = (pincode: string): boolean => {
 export const calculateShippingCharge = async (
   _destinationPincode: string,
   _weight: number = 0.5,
-  subtotal: number = 0
+  subtotal: number = 0,
+  cartItems: CartItem[] = []
 ): Promise<{
   available: boolean;
   cost: number | null;
@@ -41,11 +91,13 @@ export const calculateShippingCharge = async (
     };
   }
 
-  // Return standard shipping cost from config
+  // Calculate shipping based on cart items
+  const shippingCost = calculateShippingFromCart(cartItems);
+
   return {
     available: true,
-    cost: config.shipping.standardCost,
-    message: `Standard Shipping: ₹${config.shipping.standardCost}`,
+    cost: shippingCost,
+    message: shippingCost === 0 ? 'Free shipping' : `Delivery charge: ₹${shippingCost}`,
   };
 };
 
@@ -124,6 +176,7 @@ export const getDeliveryMessage = (deliveryDays?: number): string => {
 export default {
   validatePincodeFormat,
   calculateShippingCharge,
+  calculateShippingFromCart,
   getShippingOptions,
   validatePincode,
   formatShippingCost,

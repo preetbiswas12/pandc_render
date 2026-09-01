@@ -97,7 +97,7 @@ export default function CheckoutPage() {
       try {
         const totalItems = cartItems.reduce((sum, item) => sum + item.cartQuantity, 0);
         const estimatedWeight = Math.max(0.5, totalItems * 0.5);
-        const result = await calculateShippingCharge(zipCode, estimatedWeight, subtotal);
+        const result = await calculateShippingCharge(zipCode, estimatedWeight, subtotal, cartItems);
         setShippingCost(result.cost);
         setShippingMessage(result.message);
         setShippingAvailable(result.available);
