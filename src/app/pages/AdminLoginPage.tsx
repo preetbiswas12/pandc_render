@@ -73,30 +73,9 @@ export default function AdminLoginPage() {
               redirectUrl="/admin"
               appearance={{
                 elements: {
-                  rootBox: 'w-full',
-                  card: 'bg-transparent shadow-none border-0',
+                  card: 'shadow-none',
                   headerTitle: 'hidden',
                   headerSubtitle: 'hidden',
-                  socialButtonsBlockButton: 'bg-slate-700/50 border-slate-600 text-white hover:bg-slate-600/50',
-                  socialButtonsBlockButtonText: 'text-white',
-                  dividerText: 'text-slate-400',
-                  dividerLine: 'bg-slate-600',
-                  formFieldInput: 'bg-slate-700/40 border-slate-600 text-white placeholder-slate-500 focus:border-magenta-500 focus:ring-magenta-500/20',
-                  formFieldLabel: 'text-slate-200',
-                  formButtonPrimary: 'bg-gradient-to-r from-magenta-600 to-pink-600 hover:from-magenta-500 hover:to-pink-500 text-white',
-                  footerActionText: 'text-slate-400',
-                  footerActionLink: 'text-magenta-400 hover:text-magenta-300',
-                  formFieldWarningText: 'text-red-400',
-                  formFieldErrorText: 'text-red-400',
-                  identityPreviewText: 'text-slate-200',
-                  identityPreviewEditButton: 'text-magenta-400',
-                },
-                variables: {
-                  colorPrimary: '#d946ef',
-                  colorBackground: 'transparent',
-                  colorText: '#fff',
-                  colorInputBackground: 'rgba(51, 65, 85, 0.4)',
-                  colorInputText: '#fff',
                 },
               }}
             />
