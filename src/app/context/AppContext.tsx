@@ -143,17 +143,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return isFabric ? 2 : 1;
   };
 
+  const getMaxOrderQuantity = (product: Product): number => {
+    const isFabric = product.productType === 'fabric' || (!product.productType && product.unit !== 'pieces');
+    return isFabric ? 30 : 10;
+  };
+
   // Cart Management
   const addToCart = (product: Product, quantity?: number) => {
     const minQty = getMinOrderQuantity(product);
-    const quantityToAdd = Math.max(minQty, Math.min(quantity || minQty, 100));
+    const maxQty = getMaxOrderQuantity(product);
+    const quantityToAdd = Math.max(minQty, Math.min(quantity || minQty, maxQty));
 
     setCartItems((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {
         return prev.map((item) =>
           item.id === product.id
-            ? { ...item, cartQuantity: Math.min(item.cartQuantity + quantityToAdd, 100) }
+            ? { ...item, cartQuantity: Math.min(item.cartQuantity + quantityToAdd, maxQty) }
             : item
         );
       }
@@ -162,12 +168,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
-    const validatedQuantity = Math.min(parseInt(String(quantity), 10) || 1, 100);
+    const validatedQuantity = parseInt(String(quantity), 10) || 1;
     setCartItems((prev) =>
       prev.map((item) => {
         if (item.id !== productId) return item;
         const minQty = getMinOrderQuantity(item);
-        const finalQty = Math.max(minQty, validatedQuantity);
+        const maxQty = getMaxOrderQuantity(item);
+        const finalQty = Math.max(minQty, Math.min(validatedQuantity, maxQty));
         return { ...item, cartQuantity: finalQty };
       })
     );

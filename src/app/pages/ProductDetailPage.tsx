@@ -427,7 +427,8 @@ export default function ProductDetailPage() {
                   <button
                     onClick={() => {
                        const isFabric = product.productType === 'fabric' || (!product.productType && product.unit !== 'pieces');
-                       setQuantity(Math.max(isFabric ? 2 : 1, quantity - 1));
+                       const minQty = isFabric ? 2 : 1;
+                       setQuantity(Math.max(minQty, quantity - 1));
                     }}
                     className="w-10 h-10 flex items-center justify-center border rounded-l-xl text-lg font-medium transition-colors hover:bg-gray-100"
                     style={{
@@ -448,9 +449,11 @@ export default function ProductDetailPage() {
                     {quantity}
                   </span>
                   <button
-                    onClick={() =>
-                      setQuantity(Math.min(100, Math.min(product.quantity, quantity + 1)))
-                    }
+                    onClick={() => {
+                       const isFabric = product.productType === 'fabric' || (!product.productType && product.unit !== 'pieces');
+                       const maxQty = isFabric ? 30 : 10;
+                       setQuantity(Math.min(maxQty, Math.min(product.quantity, quantity + 1)));
+                    }}
                     className="w-10 h-10 flex items-center justify-center border rounded-r-xl text-lg font-medium transition-colors hover:bg-gray-100"
                     style={{
                       borderColor: COLORS.border,
@@ -460,9 +463,13 @@ export default function ProductDetailPage() {
                     +
                   </button>
                 </div>
-                {product.unit !== 'pieces' && (
+                {product.unit !== 'pieces' ? (
                   <p className="text-xs mt-2" style={{ color: COLORS.muted }}>
-                    Minimum order: 2 meters
+                    Minimum order: 2 meters | Maximum: 30 meters
+                  </p>
+                ) : (
+                  <p className="text-xs mt-2" style={{ color: COLORS.muted }}>
+                    Minimum order: 1 piece | Maximum: 10 pieces
                   </p>
                 )}
               </div>
