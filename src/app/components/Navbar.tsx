@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { Menu, X, Home, ShoppingBag, Heart, User, ShoppingCart, LogOut, Package } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { motion, AnimatePresence } from 'motion/react';
+import { useUser, useAuth, UserButton } from '@clerk/clerk-react';
 
 interface NavbarProps {
   cartCount?: number;
@@ -14,31 +15,37 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartItems, wishlist, categories } = useApp();
+  const { isSignedIn, user } = useUser();
+  const { signOut } = useAuth();
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.cartQuantity, 0);
 
   useEffect(() => {
-    // Check for stored user session
+    // Check for stored user session (fallback for non-Clerk users)
     const stored = localStorage.getItem('userEmail');
     if (stored) setUserEmail(stored);
 
-    // Animate navbar on mount
-    const ctx = gsap.context(() => {
-      gsap.from(navRef.current, {
-        y: -30,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-      });
-    }, navRef);
+    // Sync Clerk user data to localStorage
+    if (isSignedIn && user) {
+      const primaryEmail = user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress;
+      const userName = user.firstName || primaryEmail?.split('@')[0] || '';
+      const userPfp = user.imageUrl;
+      localStorage.setItem('userId', `user_${primaryEmail?.toLowerCase()}`);
+      localStorage.setItem('userName', userName);
+      localStorage.setItem('userEmail', primaryEmail || '');
+      if (userPfp) localStorage.setItem('userPfp', userPfp);
+      setUserEmail(primaryEmail || null);
+    }
+  }, [isSignedIn, user]);
 
-    return () => ctx.revert();
-  }, []);
-
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userPfp');
     setUserEmail(null);
+    await signOut();
     navigate('/');
   };
 
@@ -47,6 +54,7 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
   };
 
   const userName = userEmail ? userEmail.split('@')[0] : '';
+  const isLoggedIn = isSignedIn || !!userEmail;
 
   return (
     <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
@@ -95,7 +103,7 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
               )}
             </Link>
 
-            {userEmail ? (
+            {isLoggedIn ? (
               <div className="hidden md:flex items-center space-x-3">
                 <Link
                   to="/orders"
@@ -105,9 +113,20 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
                   <span>Orders</span>
                 </Link>
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-[#030213] text-white rounded-full flex items-center justify-center text-sm font-semibold">
-                    {userName.charAt(0).toUpperCase()}
-                  </div>
+                  {isSignedIn && user ? (
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: 'w-8 h-8',
+                        },
+                      }}
+                    />
+                  ) : (
+                    <div className="w-8 h-8 bg-[#030213] text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                      {userName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
                   <button
                     onClick={handleSignOut}
                     className="p-2 text-gray-600 hover:text-red-500 transition-colors"
@@ -163,11 +182,17 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
               <Link to="/contact" className="block text-sm font-medium text-gray-600 hover:text-[#030213]" onClick={() => setIsMenuOpen(false)}>
                 Contact
               </Link>
-              {userEmail ? (
+              {isLoggedIn ? (
                 <>
                   <Link to="/orders" className="block text-sm font-medium text-gray-600 hover:text-[#030213]" onClick={() => setIsMenuOpen(false)}>
                     My Orders
                   </Link>
+                  {isSignedIn && user && (
+                    <div className="flex items-center space-x-2 py-2">
+                      <UserButton afterSignOutUrl="/" />
+                      <span className="text-sm font-medium text-gray-700">{user.firstName || user.primaryEmailAddress?.emailAddress}</span>
+                    </div>
+                  )}
                   <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="block text-sm font-medium text-red-500">
                     Sign Out
                   </button>
