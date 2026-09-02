@@ -7,6 +7,7 @@ import { supabase } from '../services/database-supabase';
 import { convertGoogleDriveLink } from '../../lib/googleDriveUtils';
 import { initiateRazorpayPayment } from '../services/razorpay';
 import { Loader2, ChevronRight, Tag, Shield, Truck, ArrowLeft, Smartphone, Check } from 'lucide-react';
+import { sanitizeAndTrim, isValidEmail, isValidPhone, isValidName, isValidPincode } from '../utils/security';
 
 const COLORS = {
   blue: '#0057c2',
@@ -137,8 +138,33 @@ export default function CheckoutPage() {
   };
 
   const handleShippingNext = () => {
-    if (!formData.fullName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.zipCode) {
+    // Sanitize inputs
+    const fullName = sanitizeAndTrim(formData.fullName);
+    const email = sanitizeAndTrim(formData.email);
+    const phone = sanitizeAndTrim(formData.phone);
+    const address = sanitizeAndTrim(formData.address);
+    const city = sanitizeAndTrim(formData.city);
+    const state = sanitizeAndTrim(formData.state);
+    const zipCode = sanitizeAndTrim(formData.zipCode);
+
+    if (!fullName || !email || !phone || !address || !city || !state || !zipCode) {
       alert('Please fill in all shipping fields');
+      return;
+    }
+    if (!isValidName(fullName)) {
+      alert('Please enter a valid name (letters, spaces, hyphens only)');
+      return;
+    }
+    if (!isValidEmail(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      alert('Please enter a valid 10-digit phone number');
+      return;
+    }
+    if (!isValidPincode(zipCode)) {
+      alert('Please enter a valid 6-digit pincode');
       return;
     }
     if (!shippingAvailable) {
@@ -167,26 +193,35 @@ export default function CheckoutPage() {
   const handleCompletePurchase = async () => {
     if (isProcessing || cartItems.length === 0) return;
 
+    // Sanitize all inputs before order creation
+    const fullName = sanitizeAndTrim(formData.fullName);
+    const email = sanitizeAndTrim(formData.email);
+    const phone = sanitizeAndTrim(formData.phone);
+    const address = sanitizeAndTrim(formData.address);
+    const city = sanitizeAndTrim(formData.city);
+    const state = sanitizeAndTrim(formData.state);
+    const zipCode = sanitizeAndTrim(formData.zipCode);
+
     if (paymentMethod === 'razorpay') {
       setIsProcessing(true);
       try {
         await initiateRazorpayPayment({
           amount: total,
-          customerName: formData.fullName,
-          customerEmail: formData.email,
-          customerPhone: formData.phone,
+          customerName: fullName,
+          customerEmail: email,
+          customerPhone: phone,
           orderDetails: `Order from P&C Texfab - ${cartItems.length} items`,
           onSuccess: async (paymentId) => {
             try {
               const order = await createOrder({
-                customerName: formData.fullName,
-                customerEmail: formData.email,
-                customerPhone: formData.phone,
+                customerName: fullName,
+                customerEmail: email,
+                customerPhone: phone,
                 shippingAddress: {
-                  street: formData.address,
-                  city: formData.city,
-                  state: formData.state,
-                  zipCode: formData.zipCode,
+                  street: address,
+                  city: city,
+                  state: state,
+                  zipCode: zipCode,
                   country: formData.country
                 },
                 items: cartItems.map(item => ({
@@ -210,7 +245,7 @@ export default function CheckoutPage() {
                 paymentId
               });
 
-              localStorage.setItem('userEmail', formData.email);
+              localStorage.setItem('userEmail', email);
               clearCart();
               navigate(`/order-confirmation/${order.id}?payment=success&paymentId=${paymentId}`);
             } catch (error) {

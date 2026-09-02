@@ -10,6 +10,7 @@ import {
   RatingData,
   RatingStatistics
 } from '../services/ratings';
+import { sanitizeReviewText } from '../utils/security';
 
 interface RatingComponentProps {
   productId: string;
@@ -105,12 +106,12 @@ export default function RatingComponent({
       const ratingData: RatingData = {
         productId,
         userId,
-        userName,
+        userName: sanitizeReviewText(userName),
         userEmail,
         userPfp,
         rating: formData.rating,
-        title: formData.title,
-        comment: formData.comment,
+        title: sanitizeReviewText(formData.title),
+        comment: sanitizeReviewText(formData.comment),
       };
 
       let result;
