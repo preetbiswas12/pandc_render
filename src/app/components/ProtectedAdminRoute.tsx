@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router';
 import { useAdmin, ADMIN_EMAIL, isAdminEmail } from '../context/AdminContext';
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 
 interface ProtectedAdminRouteProps {
   children: React.ReactNode;

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router';
-import { SignIn, useUser } from '@clerk/clerk-react';
+import { SignIn, useUser } from '@clerk/react';
 
 export default function SignInPage() {
   const navigate = useNavigate();

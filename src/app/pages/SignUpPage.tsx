@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router';
-import { SignUp, useUser } from '@clerk/clerk-react';
+import { SignUp, useUser } from '@clerk/react';
 
 export default function SignUpPage() {
   const navigate = useNavigate();

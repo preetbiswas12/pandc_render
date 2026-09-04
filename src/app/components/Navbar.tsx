@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { Menu, X, Home, ShoppingBag, Heart, User, ShoppingCart, LogOut, Package } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { useUser, useAuth, UserButton } from '@clerk/clerk-react';
+import { useUser, useAuth, UserButton } from '@clerk/react';
 import { isAdminEmail, ADMIN_EMAIL } from '../context/AdminContext';
 
 interface NavbarProps {

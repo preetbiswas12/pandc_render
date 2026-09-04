@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { SignIn, useUser, useAuth } from '@clerk/clerk-react';
+import { SignIn, useUser, useAuth } from '@clerk/react';
 import { useAdmin, ADMIN_EMAIL, isAdminEmail } from '../context/AdminContext';
 import { gsap } from 'gsap';
 import { Lock, ShieldAlert } from 'lucide-react';
