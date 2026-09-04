@@ -71,8 +71,14 @@ export default function ShopPage() {
             if (normalized.images && typeof normalized.images === 'string') {
               normalized.images = normalized.images.split(',').map((s: string) => s.trim()).filter(Boolean);
             }
-            return normalized;
-          }) as unknown as Product[];
+            // Convert snake_case to camelCase
+            const camel: Record<string, unknown> = {};
+            for (const [key, value] of Object.entries(normalized)) {
+              const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+              camel[camelKey] = value;
+            }
+            return camel as unknown as Product;
+          });
           setProducts(mapped);
         }
 
