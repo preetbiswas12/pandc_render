@@ -18,6 +18,7 @@ export default function SignUpPage() {
       if (userPfp) localStorage.setItem('userPfp', userPfp);
 
       navigate('/', { replace: true });
+      window.location.reload();
     }
   }, [isSignedIn, user, isLoaded, navigate]);
 
@@ -41,7 +42,8 @@ export default function SignUpPage() {
             routing="path"
             path="/sign-up"
             signInUrl="/sign-in"
-            redirectUrl="/"
+            forceRedirectUrl="/"
+            fallbackRedirectUrl="/"
             appearance={{
               elements: {
                 card: 'shadow-lg rounded-xl',

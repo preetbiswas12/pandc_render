@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useLocation } from 'react-router';
 import { gsap } from 'gsap';
-import { Menu, X, Home, ShoppingBag, Heart, User, ShoppingCart, LogOut, Package } from 'lucide-react';
+import { Menu, X, Heart, User, ShoppingCart, LogOut, Package } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { useUser, useAuth, UserButton } from '@clerk/react';
-import { isAdminEmail, ADMIN_EMAIL } from '../context/AdminContext';
+import { isAdminEmail } from '../context/AdminContext';
 
 interface NavbarProps {
   cartCount?: number;
@@ -14,33 +14,70 @@ interface NavbarProps {
 export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
   const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartItems, wishlist, categories } = useApp();
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn, user, isLoaded } = useUser();
   const { signOut } = useAuth();
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const primaryEmail = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses[0]?.emailAddress;
-  const isAdmin = isAdminEmail(primaryEmail);
+  const [forceUpdate, setForceUpdate] = useState(0);
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.cartQuantity, 0);
 
-  useEffect(() => {
-    // Check for stored user session (fallback for non-Clerk users)
-    const stored = localStorage.getItem('userEmail');
-    if (stored) setUserEmail(stored);
+  const primaryEmail = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses[0]?.emailAddress;
+  const isAdmin = isAdminEmail(primaryEmail);
 
-    // Sync Clerk user data to localStorage
-    if (isSignedIn && user) {
-      const primaryEmail = user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress;
-      const userName = user.firstName || primaryEmail?.split('@')[0] || '';
+  // Sync Clerk user data to localStorage and update state
+  useEffect(() => {
+    if (isLoaded && isSignedIn && user) {
+      const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress;
+      const userName = user.firstName || user.username || email?.split('@')[0] || '';
       const userPfp = user.imageUrl;
-      localStorage.setItem('userId', `user_${primaryEmail?.toLowerCase()}`);
+
+      localStorage.setItem('userId', `user_${email?.toLowerCase()}`);
       localStorage.setItem('userName', userName);
-      localStorage.setItem('userEmail', primaryEmail || '');
+      localStorage.setItem('userEmail', email || '');
       if (userPfp) localStorage.setItem('userPfp', userPfp);
-      setUserEmail(primaryEmail || null);
+      setUserEmail(email || null);
+    } else if (isLoaded && !isSignedIn) {
+      // User signed out - clear localStorage
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userPfp');
+      setUserEmail(null);
     }
-  }, [isSignedIn, user]);
+  }, [isSignedIn, user, isLoaded]);
+
+  // Listen for storage changes (cross-tab) and route changes to re-render
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUserEmail(localStorage.getItem('userEmail'));
+      setForceUpdate(prev => prev + 1);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  // Re-sync when location changes (after sign-in redirect)
+  useEffect(() => {
+    const stored = localStorage.getItem('userEmail');
+    setUserEmail(stored);
+  }, [location.pathname]);
+
+  // Animation
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(navRef.current, {
+        y: -30,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+      });
+    }, navRef);
+    return () => ctx.revert();
+  }, []);
 
   const handleSignOut = async () => {
     localStorage.removeItem('userEmail');
@@ -50,13 +87,14 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
     setUserEmail(null);
     await signOut();
     navigate('/');
+    window.location.reload();
   };
 
   const handleSignIn = () => {
     navigate('/sign-in');
   };
 
-  const userName = userEmail ? userEmail.split('@')[0] : '';
+  const userName = userEmail ? userEmail.split('@')[0] : user?.firstName || user?.username || '';
   const isLoggedIn = isSignedIn || !!userEmail;
 
   return (
@@ -132,7 +170,7 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
                     />
                   ) : (
                     <div className="w-8 h-8 bg-[#030213] text-white rounded-full flex items-center justify-center text-sm font-semibold">
-                      {userName.charAt(0).toUpperCase()}
+                      {(userName || 'U').charAt(0).toUpperCase()}
                     </div>
                   )}
                   <button
@@ -203,7 +241,7 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
                   {isSignedIn && user && (
                     <div className="flex items-center space-x-2 py-2">
                       <UserButton afterSignOutUrl="/" />
-                      <span className="text-sm font-medium text-gray-700">{user.firstName || user.primaryEmailAddress?.emailAddress}</span>
+                      <span className="text-sm font-medium text-gray-700">{user.firstName || primaryEmail}</span>
                     </div>
                   )}
                   <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="block text-sm font-medium text-red-500">
