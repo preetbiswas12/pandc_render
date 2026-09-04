@@ -9,18 +9,15 @@ export default function SignUpPage() {
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       const primaryEmail = user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress;
-      const userName = user.firstName || primaryEmail?.split('@')[0] || '';
+      const userName = user.firstName || user.username || primaryEmail?.split('@')[0] || '';
       const userPfp = user.imageUrl;
 
       localStorage.setItem('userId', `user_${primaryEmail?.toLowerCase()}`);
       localStorage.setItem('userName', userName);
       localStorage.setItem('userEmail', primaryEmail || '');
       if (userPfp) localStorage.setItem('userPfp', userPfp);
-
-      navigate('/', { replace: true });
-      window.location.reload();
     }
-  }, [isSignedIn, user, isLoaded, navigate]);
+  }, [isSignedIn, user, isLoaded]);
 
   return (
     <div className="min-h-screen bg-[#f7f9fb] flex items-center justify-center p-4">
@@ -42,8 +39,9 @@ export default function SignUpPage() {
             routing="path"
             path="/sign-up"
             signInUrl="/sign-in"
-            forceRedirectUrl="/"
-            fallbackRedirectUrl="/"
+            afterSignInUrl="/"
+            afterSignUpUrl="/"
+            redirectUrl="/"
             appearance={{
               elements: {
                 card: 'shadow-lg rounded-xl',

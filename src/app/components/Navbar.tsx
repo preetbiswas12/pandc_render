@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { Menu, X, Heart, User, ShoppingCart, LogOut, Package } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { useUser, useAuth, UserButton } from '@clerk/react';
+import { useUser, useAuth, useSession, UserButton } from '@clerk/react';
 import { isAdminEmail } from '../context/AdminContext';
 
 interface NavbarProps {
@@ -18,53 +18,32 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartItems, wishlist, categories } = useApp();
   const { isSignedIn, user, isLoaded } = useUser();
+  const { session } = useSession();
   const { signOut } = useAuth();
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [forceUpdate, setForceUpdate] = useState(0);
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.cartQuantity, 0);
 
   const primaryEmail = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses[0]?.emailAddress;
   const isAdmin = isAdminEmail(primaryEmail);
 
-  // Sync Clerk user data to localStorage and update state
+  // Sync Clerk user data to localStorage whenever auth state changes
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
-      const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress;
-      const userName = user.firstName || user.username || email?.split('@')[0] || '';
+      const email = user.primaryEmailAddress?.emailAddress || user.emailAddresses[0]?.emailAddress || '';
+      const userName = user.firstName || user.username || email.split('@')[0] || '';
       const userPfp = user.imageUrl;
 
-      localStorage.setItem('userId', `user_${email?.toLowerCase()}`);
+      localStorage.setItem('userId', `user_${email.toLowerCase()}`);
       localStorage.setItem('userName', userName);
-      localStorage.setItem('userEmail', email || '');
+      localStorage.setItem('userEmail', email);
       if (userPfp) localStorage.setItem('userPfp', userPfp);
-      setUserEmail(email || null);
     } else if (isLoaded && !isSignedIn) {
-      // User signed out - clear localStorage
       localStorage.removeItem('userId');
       localStorage.removeItem('userName');
       localStorage.removeItem('userEmail');
       localStorage.removeItem('userPfp');
-      setUserEmail(null);
     }
-  }, [isSignedIn, user, isLoaded]);
-
-  // Listen for storage changes (cross-tab) and route changes to re-render
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setUserEmail(localStorage.getItem('userEmail'));
-      setForceUpdate(prev => prev + 1);
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-
-  // Re-sync when location changes (after sign-in redirect)
-  useEffect(() => {
-    const stored = localStorage.getItem('userEmail');
-    setUserEmail(stored);
-  }, [location.pathname]);
+  }, [isSignedIn, user, isLoaded, session]);
 
   // Animation
   useEffect(() => {
@@ -84,18 +63,16 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
     localStorage.removeItem('userId');
     localStorage.removeItem('userName');
     localStorage.removeItem('userPfp');
-    setUserEmail(null);
     await signOut();
     navigate('/');
-    window.location.reload();
   };
 
   const handleSignIn = () => {
     navigate('/sign-in');
   };
 
-  const userName = userEmail ? userEmail.split('@')[0] : user?.firstName || user?.username || '';
-  const isLoggedIn = isSignedIn || !!userEmail;
+  const userName = user?.firstName || user?.username || (primaryEmail ? primaryEmail.split('@')[0] : '');
+  const isLoggedIn = isSignedIn && !!user;
 
   return (
     <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
@@ -159,20 +136,14 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
                   <span>Orders</span>
                 </Link>
                 <div className="flex items-center space-x-2">
-                  {isSignedIn && user ? (
-                    <UserButton
-                      afterSignOutUrl="/"
-                      appearance={{
-                        elements: {
-                          avatarBox: 'w-8 h-8',
-                        },
-                      }}
-                    />
-                  ) : (
-                    <div className="w-8 h-8 bg-[#030213] text-white rounded-full flex items-center justify-center text-sm font-semibold">
-                      {(userName || 'U').charAt(0).toUpperCase()}
-                    </div>
-                  )}
+                  <UserButton
+                    afterSignOutUrl="/"
+                    appearance={{
+                      elements: {
+                        avatarBox: 'w-8 h-8',
+                      },
+                    }}
+                  />
                   <button
                     onClick={handleSignOut}
                     className="p-2 text-gray-600 hover:text-red-500 transition-colors"
@@ -238,12 +209,10 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
                   <Link to="/orders" className="block text-sm font-medium text-gray-600 hover:text-[#030213]" onClick={() => setIsMenuOpen(false)}>
                     My Orders
                   </Link>
-                  {isSignedIn && user && (
-                    <div className="flex items-center space-x-2 py-2">
-                      <UserButton afterSignOutUrl="/" />
-                      <span className="text-sm font-medium text-gray-700">{user.firstName || primaryEmail}</span>
-                    </div>
-                  )}
+                  <div className="flex items-center space-x-2 py-2">
+                    <UserButton afterSignOutUrl="/" />
+                    <span className="text-sm font-medium text-gray-700">{userName || primaryEmail}</span>
+                  </div>
                   <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="block text-sm font-medium text-red-500">
                     Sign Out
                   </button>
