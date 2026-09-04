@@ -582,6 +582,8 @@ export default function ShopPage() {
                   const price = typeof product.price === 'number' ? product.price : parseFloat(product.price as string) || 0;
                   const offerPercentage = typeof product.offerPercentage === 'number' ? product.offerPercentage : parseFloat(product.offerPercentage as string) || 0;
                   const discountedPrice = price - (price * offerPercentage) / 100;
+                  const isFabric = (product.productType === 'fabric') || (!product.productType && product.unit !== 'pieces');
+                  const unitLabel = isFabric ? 'meter' : 'piece';
 
                   return (
                     <Link
@@ -635,9 +637,7 @@ export default function ShopPage() {
                         </h3>
 
                         <p className="text-xs mb-3" style={{ color: DESIGN.muted, fontFamily: 'Inter, sans-serif' }}>
-                          {product.productType === 'fabric'
-                            ? `${product.quantity} meters available`
-                            : `${product.quantity} pieces available`}
+                          {`${product.quantity} ${unitLabel}${product.quantity !== 1 ? 's' : ''} available`}
                         </p>
 
                         <div className="flex items-baseline gap-2">
@@ -646,13 +646,16 @@ export default function ShopPage() {
                             style={{ color: DESIGN.text, fontFamily: 'Inter, sans-serif' }}
                           >
                             {config.currency.symbol}{discountedPrice.toFixed(2)}
+                            <span className="text-xs font-normal ml-1" style={{ color: DESIGN.muted }}>
+                              /{unitLabel}
+                            </span>
                           </span>
-                          {product.offerPercentage > 0 && (
+                          {offerPercentage > 0 && (
                             <span
                               className="text-xs line-through"
                               style={{ color: DESIGN.muted, fontFamily: 'Inter, sans-serif' }}
                             >
-                              {config.currency.symbol}{product.price.toFixed(2)}
+                              {config.currency.symbol}{price.toFixed(2)}
                             </span>
                           )}
                         </div>
