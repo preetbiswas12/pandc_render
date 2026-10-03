@@ -126,7 +126,16 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
               )}
             </Link>
 
-            {isLoggedIn ? (
+            {/* Clerk hydrates asynchronously. Until it does, isSignedIn is
+                false, which would flash a "Sign In" button at users who are
+                already signed in. A placeholder of matching size avoids both
+                the flash and the layout shift. */}
+            {!isLoaded ? (
+              <div
+                className="hidden md:block h-10 w-16 animate-pulse rounded-xl bg-gray-100"
+                aria-hidden="true"
+              />
+            ) : isLoggedIn ? (
               <div className="hidden md:flex items-center space-x-3">
                 <Link
                   to="/orders"
@@ -137,7 +146,6 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
                 </Link>
                 <div className="flex items-center space-x-2">
                   <UserButton
-                    afterSignOutUrl="/"
                     appearance={{
                       elements: {
                         avatarBox: 'w-8 h-8',
@@ -204,13 +212,15 @@ export function Navbar({ cartCount: cartCountProp }: NavbarProps) {
                   Admin
                 </Link>
               )}
-              {isLoggedIn ? (
+              {!isLoaded ? (
+                <div className="h-9 w-24 animate-pulse rounded-lg bg-gray-100" aria-hidden="true" />
+              ) : isLoggedIn ? (
                 <>
                   <Link to="/orders" className="block text-sm font-medium text-gray-600 hover:text-[#030213]" onClick={() => setIsMenuOpen(false)}>
                     My Orders
                   </Link>
                   <div className="flex items-center space-x-2 py-2">
-                    <UserButton afterSignOutUrl="/" />
+                    <UserButton />
                     <span className="text-sm font-medium text-gray-700">{userName || primaryEmail}</span>
                   </div>
                   <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="block text-sm font-medium text-red-500">

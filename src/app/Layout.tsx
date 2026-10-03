@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Layout() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const appRef = useRef<HTMLDivElement>(null);
-  const { cartItems, wishlist, updateQuantity, removeFromCart } = useApp();
+  const { cartItems, updateQuantity, removeFromCart } = useApp();
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.cartQuantity, 0);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function Layout() {
   return (
     <div ref={appRef} className="min-h-screen bg-white flex flex-col">
       <div className="w-full flex-1">
-        <Navbar cartCount={totalCartItems} wishlistCount={wishlist.length} />
+        <Navbar cartCount={totalCartItems} />
 
         <main>
           <Outlet />
