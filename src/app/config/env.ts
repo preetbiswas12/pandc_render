@@ -104,25 +104,42 @@ export const config = {
   },
 };
 
-// Helper function to check if required env variables are set
+// Checks that the variables the app cannot run without are actually present.
+//
+// This runs in production as well as dev, which matters more than it looks:
+// Vite inlines every VITE_* variable at BUILD time, so a variable missing from
+// the deployment dashboard is compiled into the bundle as an empty string and
+// fails silently at runtime. There is no error until a customer reaches
+// checkout. Logging here is the only chance to catch it beforehand.
 export const validateEnv = () => {
-  const warnings: string[] = [];
+  const errors: string[] = [];
 
   if (!config.supabase.url || !config.supabase.anonKey) {
-    warnings.push('Supabase credentials not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env');
+    errors.push(
+      'Supabase is not configured — products, cart and orders will fail. ' +
+        'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.'
+    );
   }
 
-  if (!config.payment.gatewayKey && !config.dev.mockPayments) {
-    warnings.push('Payment gateway key is not set. Payments will not work.');
+  if (!config.clerk.publishableKey) {
+    errors.push(
+      'Clerk is not configured — sign-in and sign-up are unavailable. ' +
+        'Set VITE_CLERK_PUBLISHABLE_KEY.'
+    );
   }
 
-  if (warnings.length > 0) {
-    console.warn('⚠️ Environment Configuration Warnings:');
-    warnings.forEach(warning => console.warn(`  - ${warning}`));
+  if (!config.razorpay.keyId) {
+    errors.push(
+      'Razorpay is not configured — checkout will fail. Set VITE_RAZORPAY_KEY_ID ' +
+        'on the deployment and REBUILD. Vite inlines this variable at build time, ' +
+        'so adding it to the dashboard without a new build has no effect.'
+    );
+  }
+
+  if (errors.length > 0) {
+    console.error('%c⚠️ Missing environment variables', 'color:#b91c1c;font-weight:bold;font-size:14px');
+    errors.forEach((error) => console.error(`  ✗ ${error}`));
   }
 };
 
-// Auto-validate on import in development
-if (import.meta.env.DEV) {
-  validateEnv();
-}
+validateEnv();

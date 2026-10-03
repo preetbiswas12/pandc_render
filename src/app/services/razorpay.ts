@@ -80,7 +80,15 @@ export const initiateRazorpayPayment = async (options: PaymentOptions): Promise<
   const razorpayKey = config.razorpay.keyId;
 
   if (!razorpayKey) {
-    options.onFailure(new Error('Razorpay key is not configured. Please check console for setup instructions.'));
+    console.error(
+      '[razorpay] VITE_RAZORPAY_KEY_ID resolved to an empty value. It must be set ' +
+        'on the deployment AND the project rebuilt — Vite inlines it at build time.'
+    );
+    options.onFailure(
+      new Error(
+        'Razorpay key is not configured. Set VITE_RAZORPAY_KEY_ID on the deployment and rebuild.'
+      )
+    );
     return;
   }
 
