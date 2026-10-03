@@ -15,15 +15,18 @@ export const config = {
   },
 
   // Payment Gateway
+  // NOTE: only the public key ID belongs here. It is bundled into the client
+  // JavaScript and is visible to anyone. Never read a key secret, webhook
+  // secret, or any other credential from import.meta.env — Vite inlines every
+  // VITE_* variable into the shipped bundle. Secrets must be read from
+  // process.env inside a server-side function only.
   payment: {
     gatewayKey: import.meta.env.VITE_RAZORPAY_KEY_ID || import.meta.env.VITE_PAYMENT_GATEWAY_KEY || '',
-    gatewaySecret: import.meta.env.VITE_PAYMENT_GATEWAY_SECRET || '',
   },
 
   // Razorpay
   razorpay: {
     keyId: import.meta.env.VITE_RAZORPAY_KEY_ID || '',
-    keySecret: import.meta.env.VITE_RAZORPAY_KEY_SECRET || '',
   },
 
   // Google Services

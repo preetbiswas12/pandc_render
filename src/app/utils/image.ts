@@ -2,11 +2,11 @@ export function getImageUrl(url: string | undefined | null): string {
   if (!url) return '/placeholder.png';
   if (url.includes('drive.google.com/file/d/')) {
     const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-    if (match) return \https://drive.google.com/uc?export=view&id=\\;
+    if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
   }
   if (url.includes('drive.google.com/open?id=')) {
     const match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-    if (match) return \https://drive.google.com/uc?export=view&id=\\;
+    if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
   }
   return url;
 }
